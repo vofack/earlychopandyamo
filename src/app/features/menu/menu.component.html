@@ -1,0 +1,111 @@
+<div class="menu-page">
+  <div class="container">
+    <header class="menu-head">
+      <h1 class="menu-head__title">{{ 'menu.title' | translate }}</h1>
+      <p class="menu-head__subtitle">{{ 'menu.subtitle' | translate }}</p>
+    </header>
+
+    <!-- ═══════════ Recherche et filtres ═══════════ -->
+    <div class="toolbar">
+      <div class="search">
+        <label for="dish-search" class="sr-only">{{ 'menu.searchLabel' | translate }}</label>
+        <span class="search__icon" aria-hidden="true">🔍</span>
+        <input
+          id="dish-search"
+          type="search"
+          class="search__input"
+          [value]="search()"
+          (input)="onSearchInput($event)"
+          [placeholder]="'menu.searchPlaceholder' | translate"
+          autocomplete="off"
+        />
+        @if (search()) {
+          <button
+            type="button"
+            class="search__clear"
+            (click)="search.set('')"
+            [attr.aria-label]="'menu.clearSearch' | translate"
+          >
+            ×
+          </button>
+        }
+      </div>
+
+      <!-- Onglets de catégorie. `role="tablist"` serait trompeur ici : ce sont
+           des boutons de filtre, pas des onglets de panneaux distincts. -->
+      <div class="cats" [attr.aria-label]="'menu.categories.all' | translate" role="group">
+        @for (cat of categories; track cat) {
+          <button
+            type="button"
+            class="cats__btn"
+            [class.is-active]="activeCategory() === cat"
+            [attr.aria-pressed]="activeCategory() === cat"
+            (click)="setCategory(cat)"
+          >
+            {{ 'menu.categories.' + cat | translate }}
+          </button>
+        }
+      </div>
+
+      <fieldset class="diet">
+        <legend class="sr-only">{{ 'menu.filters.label' | translate }}</legend>
+
+        <label class="diet__chip" [class.is-on]="onlyVegetarian()">
+          <input
+            type="checkbox"
+            [checked]="onlyVegetarian()"
+            (change)="onlyVegetarian.set(!onlyVegetarian())"
+          />
+          <span aria-hidden="true">🌱</span> {{ 'menu.filters.vegetarian' | translate }}
+        </label>
+
+        <label class="diet__chip" [class.is-on]="onlySpicy()">
+          <input type="checkbox" [checked]="onlySpicy()" (change)="onlySpicy.set(!onlySpicy())" />
+          <span aria-hidden="true">🌶️</span> {{ 'menu.filters.spicy' | translate }}
+        </label>
+
+        <label class="diet__chip" [class.is-on]="noPeanut()">
+          <input type="checkbox" [checked]="noPeanut()" (change)="noPeanut.set(!noPeanut())" />
+          <span aria-hidden="true">🥜</span> {{ 'menu.filters.noPeanut' | translate }}
+        </label>
+      </fieldset>
+    </div>
+
+    <!-- Le nombre de résultats est annoncé aux lecteurs d'écran : sans cela,
+         un utilisateur non voyant ne perçoit pas l'effet de son filtre. -->
+    @if (!menu.loading() && !menu.error()) {
+      <p class="result-count" role="status" aria-live="polite">
+        {{ 'menu.resultCount' | translate: { count: filtered().length } }}
+      </p>
+    }
+
+    <!-- ═══════════ Contenu ═══════════ -->
+    @if (menu.loading()) {
+      <div class="grid">
+        <app-skeleton variant="card" [count]="6" [label]="'common.loading' | translate" />
+      </div>
+    } @else if (menu.error()) {
+      <app-empty-state
+        icon="⚠️"
+        titleKey="menu.loadError.title"
+        textKey="menu.loadError.text"
+      />
+    } @else if (menuIsEmpty()) {
+      <app-empty-state icon="🍽️" titleKey="menu.noDishes.title" textKey="menu.noDishes.text" />
+    } @else if (filtered().length === 0) {
+      <app-empty-state
+        icon="🔍"
+        titleKey="menu.empty.title"
+        textKey="menu.empty.text"
+        ctaKey="menu.empty.cta"
+        (action)="resetFilters()"
+      />
+    } @else {
+      <div class="grid">
+        @for (dish of filtered(); track dish.id) {
+          <app-dish-card [dish]="dish" />
+        }
+      </div>
+    }
+  </div>
+</div>

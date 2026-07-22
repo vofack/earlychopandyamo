@@ -1,0 +1,34 @@
+@use 'styles/tokens' as *;
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 24px;
+  @include enter(fade-up, $t-slow);
+}
+
+.empty__icon {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  margin-bottom: 22px;
+  font-size: 2.4rem;
+  background: $blue-light;
+  border-radius: $r-full;
+}
+
+.empty__title {
+  font-size: 1.35rem;
+  margin-bottom: 10px;
+  color: $ink;
+}
+
+.empty__text {
+  max-width: 42ch;
+  margin-bottom: 26px;
+  color: $ink-soft;
+  line-height: 1.65;
+}

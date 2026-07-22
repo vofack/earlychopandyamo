@@ -1,0 +1,100 @@
+<header class="head">
+  <div>
+    <h1 class="head__title">{{ 'admin.customers.title' | translate }}</h1>
+    <p class="head__subtitle">
+      {{ 'admin.customers.count' | translate: { count: totalCustomers() } }}
+    </p>
+  </div>
+</header>
+
+<div class="search">
+  <label for="cust-search" class="sr-only">{{ 'admin.customers.search' | translate }}</label>
+  <input
+    id="cust-search"
+    type="search"
+    class="field__control"
+    [value]="search()"
+    (input)="onSearch($event)"
+    [placeholder]="'admin.customers.search' | translate"
+    autocomplete="off"
+  />
+</div>
+
+@if (loading()) {
+  <app-skeleton variant="row" [count]="5" [label]="'common.loading' | translate" />
+} @else if (totalCustomers() === 0) {
+  <app-empty-state
+    icon="👥"
+    titleKey="admin.customers.empty.title"
+    textKey="admin.customers.empty.text"
+  />
+} @else if (filtered().length === 0) {
+  <app-empty-state
+    icon="🔍"
+    titleKey="menu.empty.title"
+    textKey="menu.empty.text"
+  />
+} @else {
+  <div class="table-wrap">
+    <table class="ctable">
+      <thead>
+        <tr>
+          <th>{{ 'admin.customers.customer' | translate }}</th>
+          <th>{{ 'admin.customers.code' | translate }}</th>
+          <th>{{ 'admin.customers.referredBy' | translate }}</th>
+          <th class="num">{{ 'admin.customers.orders' | translate }}</th>
+          <th class="num">{{ 'admin.customers.spent' | translate }}</th>
+          <th class="num">{{ 'admin.customers.points' | translate }}</th>
+          <th class="num">{{ 'admin.customers.freeMeals' | translate }}</th>
+          <th>{{ 'admin.customers.adjust' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of filtered(); track u.uid) {
+          <tr>
+            <td>
+              <div class="cust">
+                <span class="cust__name">{{ u.displayName || '—' }}</span>
+                <span class="cust__email">{{ u.email }}</span>
+                @if (u.createdAt) {
+                  <span class="cust__since">
+                    {{ u.createdAt.toDate() | date: 'mediumDate' : undefined : language.locale() }}
+                  </span>
+                }
+              </div>
+            </td>
+            <td><code class="code">{{ u.referralCode }}</code></td>
+            <td>
+              @if (referrerName(u); as ref) {
+                <span class="ref">{{ ref }}</span>
+              } @else {
+                <span class="muted">—</span>
+              }
+            </td>
+            <td class="num">{{ u.ordersCount || 0 }}</td>
+            <td class="num">
+              {{ (u.totalSpent || 0) | currency: 'CAD' : 'symbol-narrow' : '1.0-0' : language.locale() }}
+            </td>
+            <td class="num"><strong>{{ u.points || 0 }}</strong></td>
+            <td class="num">
+              @if (freeMeals(u) > 0) {
+                <span class="meal-badge">🎁 {{ freeMeals(u) }}</span>
+              } @else {
+                <span class="muted">0</span>
+              }
+            </td>
+            <td>
+              <div class="adjust">
+                <button type="button" class="adjust__btn" (click)="adjust(u, -1)" aria-label="-1">−</button>
+                <button type="button" class="adjust__btn" (click)="adjust(u, 1)" aria-label="+1">+</button>
+                <button type="button" class="adjust__more" (click)="adjustCustom(u)">
+                  {{ 'admin.customers.custom' | translate }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

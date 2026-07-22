@@ -1,0 +1,393 @@
+<div class="checkout container">
+  <!-- ═══════════════ Écran de succès ═══════════════ -->
+  @if (placedOrder(); as order) {
+    <div class="success">
+      <div class="success__check" aria-hidden="true">✓</div>
+
+      <h1 class="success__title">{{ 'success.title' | translate }}</h1>
+      <p class="success__text">
+        {{ 'success.text' | translate: { name: order.clientName } }}
+      </p>
+
+      <div class="success__number">
+        <span class="success__number-label">{{ 'success.orderNumber' | translate }}</span>
+        <strong class="success__number-value">{{ shortId() }}</strong>
+      </div>
+
+      <p class="success__estimate">
+        {{ 'success.estimate' | translate: { time: deliveryEstimate } }}
+      </p>
+
+      <!-- Message honnête : la commande est bien enregistrée même si le
+           courriel n'est pas parti. On invite alors à noter le numéro. -->
+      @if (emailDelivered()) {
+        <p class="success__email">
+          {{ 'success.emailSent' | translate: { email: order.email } }}
+        </p>
+      } @else {
+        <p class="success__email success__email--warn">
+          {{ 'success.emailFailed' | translate }}
+        </p>
+      }
+
+      <div class="success__actions">
+        <a class="btn btn--primary" [routerLink]="['/suivi', order.id]">
+          {{ 'success.track' | translate }}
+        </a>
+        <a
+          class="btn btn--ghost"
+          [href]="whatsappLink()"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          💬 {{ 'success.whatsapp' | translate }}
+        </a>
+      </div>
+
+      <a class="success__home" routerLink="/">{{ 'success.home' | translate }}</a>
+    </div>
+  }
+
+  <!-- ═══════════════ Panier vide ═══════════════ -->
+  @else if (cart.isEmpty()) {
+    <app-empty-state
+      icon="🛒"
+      titleKey="checkout.emptyCart.title"
+      textKey="checkout.emptyCart.text"
+      ctaKey="checkout.emptyCart.cta"
+      ctaLink="/menu"
+    />
+  }
+
+  <!-- ═══════════════ Formulaire ═══════════════ -->
+  @else {
+    <header class="checkout__head">
+      <h1 class="checkout__title">{{ 'checkout.title' | translate }}</h1>
+      <p class="checkout__subtitle">{{ 'checkout.subtitle' | translate }}</p>
+    </header>
+
+    <!-- Restaurant fermé : on l'annonce avant que le client remplisse tout
+         le formulaire pour rien. Le panier, lui, est conservé. -->
+    @if (!settings.isOpenNow()) {
+      <div class="alert alert--warn" role="alert">
+        <strong>{{ 'checkout.closed.title' | translate }}</strong>
+        <p>{{ 'checkout.closed.text' | translate }}</p>
+        @if (settings.nextOpening(); as next) {
+          <p class="alert__when">
+            {{
+              'checkout.closed.reopens'
+                | translate
+                  : {
+                      time: next.isToday
+                        ? next.time
+                        : ('days.' + next.dayIndex | translate) + ' ' + next.time
+                    }
+            }}
+          </p>
+        }
+      </div>
+    }
+
+    @if (submitFailed()) {
+      <div class="alert alert--error" role="alert">
+        <strong>{{ 'checkout.failed.title' | translate }}</strong>
+        <p>{{ 'checkout.failed.text' | translate }}</p>
+      </div>
+    }
+
+    <div class="checkout__grid">
+      <form class="checkout__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <!-- ---------- Coordonnées ---------- -->
+        <fieldset class="fs">
+          <legend class="fs__legend">{{ 'checkout.sectionContact' | translate }}</legend>
+
+          <div class="field">
+            <label class="field__label" for="clientName">
+              {{ 'checkout.form.name' | translate }}<span class="req" aria-hidden="true">*</span>
+            </label>
+            <input
+              id="clientName"
+              type="text"
+              class="field__control"
+              [class.is-invalid]="showError('clientName')"
+              formControlName="clientName"
+              [placeholder]="'checkout.form.namePlaceholder' | translate"
+              autocomplete="name"
+              required
+              [attr.aria-invalid]="showError('clientName')"
+              [attr.aria-describedby]="showError('clientName') ? 'err-clientName' : null"
+            />
+            @if (showError('clientName')) {
+              <p class="field__error" id="err-clientName">
+                <span aria-hidden="true">⚠</span> {{ errorKey('clientName')! | translate }}
+              </p>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field__label" for="email">
+                {{ 'checkout.form.email' | translate }}<span class="req" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                class="field__control"
+                [class.is-invalid]="showError('email')"
+                formControlName="email"
+                [placeholder]="'checkout.form.emailPlaceholder' | translate"
+                autocomplete="email"
+                inputmode="email"
+                required
+                [attr.aria-invalid]="showError('email')"
+                [attr.aria-describedby]="showError('email') ? 'err-email' : 'hint-email'"
+              />
+              @if (showError('email')) {
+                <p class="field__error" id="err-email">
+                  <span aria-hidden="true">⚠</span> {{ errorKey('email')! | translate }}
+                </p>
+              } @else {
+                <p class="field__hint" id="hint-email">
+                  {{ 'checkout.form.emailHint' | translate }}
+                </p>
+              }
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="phone">
+                {{ 'checkout.form.phone' | translate }}<span class="req" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                class="field__control"
+                [class.is-invalid]="showError('phone')"
+                formControlName="phone"
+                [placeholder]="'checkout.form.phonePlaceholder' | translate"
+                autocomplete="tel"
+                inputmode="tel"
+                required
+                [attr.aria-invalid]="showError('phone')"
+                [attr.aria-describedby]="showError('phone') ? 'err-phone' : 'hint-phone'"
+              />
+              @if (showError('phone')) {
+                <p class="field__error" id="err-phone">
+                  <span aria-hidden="true">⚠</span> {{ errorKey('phone')! | translate }}
+                </p>
+              } @else {
+                <p class="field__hint" id="hint-phone">
+                  {{ 'checkout.form.phoneHint' | translate }}
+                </p>
+              }
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ---------- Livraison ---------- -->
+        <fieldset class="fs">
+          <legend class="fs__legend">{{ 'checkout.sectionDelivery' | translate }}</legend>
+
+          <div class="field">
+            <label class="field__label" for="address">
+              {{ 'checkout.form.address' | translate }}<span class="req" aria-hidden="true">*</span>
+            </label>
+            <input
+              id="address"
+              type="text"
+              class="field__control"
+              [class.is-invalid]="showError('address')"
+              formControlName="address"
+              [placeholder]="'checkout.form.addressPlaceholder' | translate"
+              autocomplete="street-address"
+              required
+              [attr.aria-invalid]="showError('address')"
+              [attr.aria-describedby]="showError('address') ? 'err-address' : null"
+            />
+            @if (showError('address')) {
+              <p class="field__error" id="err-address">
+                <span aria-hidden="true">⚠</span> {{ errorKey('address')! | translate }}
+              </p>
+            }
+          </div>
+
+          <div class="field field--half">
+            <label class="field__label" for="postalCode">
+              {{ 'checkout.form.postalCode' | translate }}<span class="req" aria-hidden="true">*</span>
+            </label>
+            <input
+              id="postalCode"
+              type="text"
+              class="field__control"
+              [class.is-invalid]="showError('postalCode')"
+              formControlName="postalCode"
+              [placeholder]="'checkout.form.postalCodePlaceholder' | translate"
+              autocomplete="postal-code"
+              maxlength="7"
+              required
+              [attr.aria-invalid]="showError('postalCode')"
+              [attr.aria-describedby]="showError('postalCode') ? 'err-postalCode' : null"
+            />
+            @if (showError('postalCode')) {
+              <p class="field__error" id="err-postalCode">
+                <span aria-hidden="true">⚠</span> {{ errorKey('postalCode')! | translate }}
+              </p>
+            }
+          </div>
+        </fieldset>
+
+        <!-- ---------- Paiement ---------- -->
+        <fieldset class="fs">
+          <legend class="fs__legend">{{ 'checkout.sectionPayment' | translate }}</legend>
+
+          <div class="field">
+            <label class="field__label" for="paymentMethod">
+              {{ 'checkout.form.payment' | translate }}<span class="req" aria-hidden="true">*</span>
+            </label>
+            <select
+              id="paymentMethod"
+              class="field__control"
+              formControlName="paymentMethod"
+              required
+              aria-describedby="hint-payment"
+            >
+              @for (method of paymentMethods; track method) {
+                <option [value]="method">{{ 'checkout.payment.' + method | translate }}</option>
+              }
+            </select>
+            <p class="field__hint" id="hint-payment">
+              {{ 'checkout.form.paymentHint' | translate }}
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="notes">
+              {{ 'checkout.form.notes' | translate }}
+              <span class="field__optional">({{ 'common.optional' | translate }})</span>
+            </label>
+            <textarea
+              id="notes"
+              class="field__control"
+              formControlName="notes"
+              [placeholder]="'checkout.form.notesPlaceholder' | translate"
+              rows="3"
+            ></textarea>
+          </div>
+        </fieldset>
+
+        <button
+          type="submit"
+          class="btn btn--primary btn--block checkout__submit"
+          [disabled]="!canSubmit()"
+        >
+          @if (submitting()) {
+            <span class="spinner" aria-hidden="true"></span>
+            {{ 'checkout.submitting' | translate }}
+          } @else {
+            {{ 'checkout.submit' | translate }}
+          }
+        </button>
+      </form>
+
+      <!-- ---------- Récapitulatif ---------- -->
+      <aside class="summary">
+        <h2 class="summary__title">{{ 'checkout.summary.title' | translate }}</h2>
+
+        <ul class="summary__items">
+          @for (item of cart.items(); track item.dishId) {
+            <li class="summary__item">
+              <span class="summary__qty">{{ item.quantity }}×</span>
+              <span class="summary__name">{{ item.name | localized }}</span>
+              <span class="summary__price">
+                {{
+                  item.price * item.quantity
+                    | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale()
+                }}
+              </span>
+            </li>
+          }
+        </ul>
+
+        <dl class="summary__totals">
+          <div class="summary__row">
+            <dt>{{ 'cart.subtotal' | translate }}</dt>
+            <dd>
+              {{ cart.subtotal() | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+            </dd>
+          </div>
+
+          <div class="summary__row">
+            <dt>{{ 'cart.delivery' | translate }}</dt>
+            <dd>
+              @if (settings.deliveryFee() === 0) {
+                <span class="summary__free">{{ 'cart.free' | translate }}</span>
+              } @else {
+                {{
+                  settings.deliveryFee()
+                    | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale()
+                }}
+              }
+            </dd>
+          </div>
+
+          <!-- Réductions de fidélité, affichées uniquement si applicables. -->
+          @if (discount() > 0) {
+            <div class="summary__row summary__row--discount">
+              <dt>
+                @if (welcomePerkEligible() && freeMealDiscountActive()) {
+                  {{ 'checkout.loyalty.discounts' | translate }}
+                } @else if (welcomePerkEligible()) {
+                  {{ 'checkout.loyalty.welcomeLabel' | translate }}
+                } @else {
+                  {{ 'checkout.loyalty.freeMealLabel' | translate }}
+                }
+              </dt>
+              <dd>
+                −{{ discount() | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+              </dd>
+            </div>
+          }
+
+          <div class="summary__row summary__row--grand">
+            <dt>{{ 'cart.total' | translate }}</dt>
+            <dd>
+              {{ finalTotal() | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+            </dd>
+          </div>
+        </dl>
+
+        <!-- Avantage filleul : automatique, informatif. -->
+        @if (welcomePerkEligible()) {
+          <p class="loyalty-note loyalty-note--gift">
+            🎁
+            {{
+              'checkout.loyalty.welcomeApplied'
+                | translate: { amount: settings.settings().referral.welcomePerkAmount }
+            }}
+          </p>
+        }
+
+        <!-- Repas gratuit : opt-in par case à cocher. -->
+        @if (freeMealEligible()) {
+          <label class="freemeal">
+            <input
+              type="checkbox"
+              [checked]="useFreeMeal()"
+              (change)="useFreeMeal.set(!useFreeMeal())"
+            />
+            <span class="freemeal__body">
+              <strong>🍽️ {{ 'checkout.loyalty.useFreeMeal' | translate }}</strong>
+              <span>
+                {{
+                  'checkout.loyalty.freeMealHint'
+                    | translate: { amount: settings.settings().referral.freeMealCredit }
+                }}
+              </span>
+            </span>
+          </label>
+        }
+
+        <a class="summary__edit" routerLink="/menu">{{ 'checkout.summary.edit' | translate }}</a>
+      </aside>
+    </div>
+  }
+</div>

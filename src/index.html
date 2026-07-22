@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>EarlyChop &amp; Yamo — Cuisine africaine authentique livrée à Montréal</title>
+  <meta name="description"
+        content="Saveurs d'Afrique livrées chez vous. Livraison 100% gratuite en 30-45 minutes à Montréal. Plats faits maison, 100% frais. Commandez en ligne.">
+  <meta name="theme-color" content="#1B8FD4">
+  <meta name="author" content="EarlyChop & Yamo">
+
+  <!-- Open Graph — aperçu riche au partage sur Facebook, WhatsApp, iMessage.
+       NOTE : ces crawlers n'exécutent pas le JavaScript. Ils ne verront donc
+       JAMAIS les balises posées dynamiquement par SeoService, uniquement
+       celles présentes ici. Le partage d'une page profonde (/menu) affichera
+       cet aperçu générique — c'est le compromis assumé d'une SPA sans SSR. -->
+  <meta property="og:type" content="restaurant.restaurant">
+  <meta property="og:site_name" content="EarlyChop & Yamo">
+  <meta property="og:title" content="EarlyChop & Yamo — Cuisine africaine authentique">
+  <meta property="og:description"
+        content="Saveurs d'Afrique livrées chez vous. Livraison 100% gratuite en 30-45 minutes à Montréal.">
+  <meta property="og:image" content="/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="fr_CA">
+  <meta property="og:locale:alternate" content="en_CA">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EarlyChop & Yamo — Cuisine africaine authentique">
+  <meta name="twitter:description" content="Saveurs d'Afrique livrées chez vous. Livraison gratuite à Montréal.">
+  <meta name="twitter:image" content="/og-image.jpg">
+
+  <link rel="canonical" href="https://earlychopandyamo-a6214.web.app/">
+  <link rel="alternate" hreflang="fr-CA" href="https://earlychopandyamo-a6214.web.app/">
+  <link rel="alternate" hreflang="en-CA" href="https://earlychopandyamo-a6214.web.app/">
+  <link rel="alternate" hreflang="x-default" href="https://earlychopandyamo-a6214.web.app/">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- Préchargement de la photo de bannière (élément le plus visible au
+       chargement) : accélère le LCP. On sert la bonne taille selon l'écran
+       via `imagesrcset`, comme le fait la balise <img> du hero. -->
+  <link
+    rel="preload"
+    as="image"
+    href="/hero-1920.webp"
+    imagesrcset="/hero-960.webp 960w, /hero-1920.webp 1920w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  >
+
+  <!-- Polices : preconnect avant le chargement pour éviter un aller-retour DNS
+       sur le chemin critique du rendu. `display=swap` évite le texte invisible. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+
+  <!-- Données structurées Schema.org : permet à Google d'afficher horaires,
+       adresse et type de cuisine directement dans les résultats de recherche. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "EarlyChop & Yamo",
+    "description": "Cuisine africaine authentique, livrée gratuitement à Montréal.",
+    "servesCuisine": ["African", "Cameroonian", "West African"],
+    "priceRange": "$$",
+    "email": "earlychopandyamo@gmail.com",
+    "telephone": "+1-438-404-2421",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Montréal",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    "url": "https://earlychopandyamo-a6214.web.app/",
+    "acceptsReservations": "False",
+    "hasDeliveryMethod": {
+      "@type": "DeliveryMethod",
+      "name": "Livraison gratuite"
+    }
+  }
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+  <noscript>
+    Cette application nécessite JavaScript pour fonctionner.
+    Veuillez l'activer dans votre navigateur.
+    &mdash;
+    This application requires JavaScript. Please enable it in your browser.
+  </noscript>
+</body>
+</html>

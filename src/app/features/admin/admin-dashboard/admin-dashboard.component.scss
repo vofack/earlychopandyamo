@@ -1,0 +1,87 @@
+@use 'styles/tokens' as *;
+@use 'styles/admin' as *;
+
+.recent {
+  padding: 22px 20px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  box-shadow: $shadow-xs;
+}
+
+.recent__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid $line;
+}
+
+.recent__title {
+  font-size: 1.12rem;
+  color: $ink;
+}
+
+.recent__all {
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: $blue-dark;
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+.recent__empty {
+  padding: 24px 0;
+  text-align: center;
+  color: $ink-soft;
+  font-size: 0.92rem;
+}
+
+.recent__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid $line-soft;
+
+  &:last-child { border-bottom: none; }
+}
+
+.recent__id {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: $blue-dark;
+  font-variant-numeric: tabular-nums;
+}
+
+.recent__name {
+  flex: 1;
+  min-width: 120px;
+  font-weight: 600;
+  font-size: 0.93rem;
+  color: $ink;
+}
+
+.recent__total {
+  font-weight: 700;
+  font-size: 0.93rem;
+  color: $ink;
+  font-variant-numeric: tabular-nums;
+}
+
+.recent__date {
+  font-size: 0.8rem;
+  color: $ink-faint;
+  font-variant-numeric: tabular-nums;
+}

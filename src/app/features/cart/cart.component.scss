@@ -1,0 +1,322 @@
+@use 'styles/tokens' as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(20, 24, 29, 0.5);
+  backdrop-filter: blur(3px);
+  @include enter(fade-in, $t-base);
+}
+
+.drawer {
+  position: fixed;
+  z-index: 1010;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 440px;
+
+  display: flex;
+  flex-direction: column;
+  background: $surface;
+  box-shadow: -12px 0 48px rgba(20, 24, 29, 0.22);
+  @include enter(slide-in-right, $t-base);
+}
+
+/* ═══════════ En-tête ═══════════ */
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 22px;
+  border-bottom: 1px solid $line;
+  flex-shrink: 0;
+}
+
+.drawer__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  color: $ink;
+}
+
+.drawer__count {
+  display: grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding-inline: 8px;
+  background: $blue-light;
+  color: $blue-darker;
+  font-family: $font-body;
+  font-size: 0.82rem;
+  font-weight: 800;
+  border-radius: $r-full;
+}
+
+.drawer__close {
+  @include tap-target;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-radius: $r-full;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: $ink-soft;
+  transition: background-color $t-fast $ease-out, color $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    background: $line-soft;
+    color: $ink;
+  }
+}
+
+/* ═══════════ Panier vide ═══════════ */
+.drawer__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 12px;
+  padding: 40px 28px;
+  text-align: center;
+
+  h3 {
+    font-size: 1.2rem;
+    color: $ink;
+  }
+
+  p {
+    color: $ink-soft;
+    margin-bottom: 12px;
+  }
+}
+
+.drawer__empty-icon {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 6px;
+  font-size: 2.2rem;
+  background: $blue-light;
+  border-radius: $r-full;
+}
+
+/* ═══════════ Lignes ═══════════ */
+.items {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  padding: 8px 22px;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  gap: 13px;
+  padding: 16px 0;
+  border-bottom: 1px solid $line-soft;
+  @include enter(fade-in, $t-fast);
+
+  &:last-child { border-bottom: none; }
+}
+
+.item__thumb {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, $blue-light, $gold-light);
+  border-radius: $r-md;
+  font-size: 1.6rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.item__name {
+  font-weight: 600;
+  font-size: 0.97rem;
+  color: $ink;
+  line-height: 1.35;
+}
+
+.item__unit {
+  margin-top: 3px;
+  font-size: 0.85rem;
+  color: $ink-soft;
+}
+
+.item__allergens {
+  margin-top: 5px;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: $warning;
+}
+
+.item__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.item__line-total {
+  font-weight: 800;
+  font-size: 0.98rem;
+  color: $ink;
+  font-variant-numeric: tabular-nums;
+}
+
+.item__remove {
+  padding: 2px 4px;
+  background: transparent;
+  border: none;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: $danger;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  @include focus-ring($danger);
+
+  &:hover { color: #9E2020; }
+}
+
+/* ---------- Sélecteur de quantité ---------- */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 2px;
+  background: $canvas;
+  border: 1.5px solid $line;
+  border-radius: $r-full;
+}
+
+.stepper__btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: $r-full;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  color: $blue-dark;
+  transition: background-color $t-fast $ease-out, color $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    background: $blue-dark;
+    color: #fff;
+  }
+}
+
+.stepper__value {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: $ink;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════ Pied ═══════════ */
+.drawer__foot {
+  flex-shrink: 0;
+  padding: 20px 22px calc(22px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid $line;
+  background: $canvas;
+}
+
+.totals {
+  margin: 0 0 16px;
+}
+
+.totals__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+
+  dt {
+    font-size: 0.93rem;
+    color: $ink-soft;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $ink;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &--grand {
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid $line;
+
+    dt {
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: $ink;
+    }
+
+    dd {
+      font-family: $font-display;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $gold-text;      /* PAS $gold : 5.4:1 sur $canvas ✓ AA */
+    }
+  }
+}
+
+.totals__free {
+  padding: 3px 11px;
+  background: $success-bg;
+  color: #0F5C37;            /* 6.4:1 ✓ AA */
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  border-radius: $r-full;
+}
+
+.notice {
+  padding: 11px 14px;
+  margin-bottom: 12px;
+  border-radius: $r-sm;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.5;
+
+  &--warn {
+    background: $warning-bg;
+    color: $warning;
+    border: 1px solid rgba(154, 103, 0, 0.28);
+  }
+}

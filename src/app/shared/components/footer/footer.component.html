@@ -1,0 +1,64 @@
+<footer class="footer">
+  <div class="footer__inner container">
+    <div class="footer__brand">
+      <div class="footer__logo">
+        <span aria-hidden="true">🍽️</span>
+        <span>{{ 'nav.brand' | translate }}</span>
+      </div>
+      <p class="footer__tagline">{{ 'footer.tagline' | translate }}</p>
+
+      <p class="footer__status">
+        @if (settings.isOpenNow()) {
+          <span class="dot dot--open" aria-hidden="true"></span>
+          {{ 'footer.openNow' | translate }}
+        } @else {
+          <span class="dot dot--closed" aria-hidden="true"></span>
+          {{ 'footer.closedNow' | translate }}
+        }
+      </p>
+    </div>
+
+    <nav class="footer__col" [attr.aria-label]="'footer.navigation' | translate">
+      <h2 class="footer__heading">{{ 'footer.navigation' | translate }}</h2>
+      <a routerLink="/">{{ 'nav.home' | translate }}</a>
+      <a routerLink="/menu">{{ 'nav.menu' | translate }}</a>
+      <a routerLink="/admin/login">{{ 'footer.adminLink' | translate }}</a>
+    </nav>
+
+    <div class="footer__col">
+      <h2 class="footer__heading">{{ 'footer.contact' | translate }}</h2>
+      <a [href]="'mailto:' + restaurant.email">{{ restaurant.email }}</a>
+      <a [href]="'tel:+' + restaurant.whatsapp">{{ restaurant.phoneDisplay }}</a>
+      <a [href]="whatsappLink()" target="_blank" rel="noopener noreferrer" class="footer__wa">
+        <span aria-hidden="true">💬</span> WhatsApp
+      </a>
+      <p class="footer__city">{{ restaurant.city }}</p>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__heading">{{ 'footer.hours' | translate }}</h2>
+      <ul class="hours">
+        @for (day of weekDays; track day) {
+          <li class="hours__row" [class.hours__row--today]="day === todayIndex">
+            <span class="hours__day">{{ 'days.' + day | translate }}</span>
+            @if (settings.settings().openingHours[day]; as h) {
+              <span class="hours__time">
+                @if (h.closed) {
+                  {{ 'footer.closedDay' | translate }}
+                } @else {
+                  {{ h.open }} – {{ h.close }}
+                }
+              </span>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container">
+      © {{ year }} {{ 'nav.brand' | translate }}. {{ 'footer.rights' | translate }}
+    </div>
+  </div>
+</footer>

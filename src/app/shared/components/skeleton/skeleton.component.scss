@@ -1,0 +1,91 @@
+@use 'styles/tokens' as *;
+
+:host {
+  display: contents;
+}
+
+.sk {
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  padding: 18px;
+}
+
+.sk__line {
+  height: 12px;
+  margin-bottom: 10px;
+  @include skeleton;
+
+  &--title {
+    height: 18px;
+    width: 65%;
+    margin-bottom: 14px;
+  }
+
+  &--short { width: 45%; }
+
+  &--big {
+    height: 30px;
+    width: 70%;
+    margin-bottom: 0;
+  }
+}
+
+/* ---------- Carte de plat ---------- */
+.sk--card {
+  .sk__media {
+    /* Déclarations avant `@include` : le mixin contient une media query, et
+       Sass avertit sur toute propriété écrite après une règle imbriquée. */
+    height: 170px;
+    border-radius: $r-md;
+    margin-bottom: 16px;
+    @include skeleton;
+  }
+}
+
+.sk__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.sk__price {
+  width: 72px;
+  height: 24px;
+  @include skeleton;
+}
+
+.sk__btn {
+  width: 108px;
+  height: 40px;
+  border-radius: $r-full;
+  @include skeleton;
+}
+
+/* ---------- Ligne (commande, plat en admin) ---------- */
+.sk--row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sk__avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: $r-md;
+  flex-shrink: 0;
+  @include skeleton;
+}
+
+.sk__rowbody {
+  flex: 1;
+
+  .sk__line:last-child { margin-bottom: 0; }
+}
+
+/* ---------- Tuile de statistique ---------- */
+.sk--stat {
+  .sk__line:first-child { margin-bottom: 14px; }
+}

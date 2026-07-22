@@ -1,0 +1,131 @@
+<!-- ═══════════════ Hero ═══════════════ -->
+<section class="hero">
+  <!-- Photo de fond décorative (alt vide). `<img>` plutôt que background-image :
+       permet le préchargement + fetchpriority pour un affichage plus rapide,
+       et srcset pour servir la bonne taille selon l'écran. -->
+  <img
+    class="hero__photo"
+    src="/hero-1920.webp"
+    srcset="/hero-960.webp 960w, /hero-1920.webp 1920w"
+    sizes="100vw"
+    alt=""
+    fetchpriority="high"
+    decoding="async"
+  />
+  <!-- Voile sombre : garantit la lisibilité du texte blanc quelle que soit la
+       photo. Purement décoratif. -->
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <div class="hero__inner container">
+    <span class="hero__badge">
+      <span class="hero__badge-dot" aria-hidden="true"></span>
+      {{ 'home.badge' | translate }}
+    </span>
+
+    <h1 class="hero__title">{{ 'home.title' | translate }}</h1>
+
+    <p class="hero__subtitle">{{ 'home.subtitle' | translate }}</p>
+
+    <div class="hero__actions">
+      <a routerLink="/menu" class="btn btn--gold hero__cta">
+        {{ 'home.cta' | translate }}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <ul class="pills">
+      @for (pill of pills; track pill; let i = $index) {
+        <li class="pills__item" [style.animation-delay.ms]="360 + i * 90">
+          {{ 'home.pills.' + pill | translate }}
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Bannière de fermeture — n'apparaît que si le restaurant ne prend pas de
+     commande, pour ne pas laisser un client remplir un panier en vain. -->
+@if (!settings.isOpenNow()) {
+  <div class="closed-banner" role="status">
+    <div class="container closed-banner__inner">
+      <span class="closed-banner__icon" aria-hidden="true">🌙</span>
+      <div>
+        <strong>{{ 'home.closed.title' | translate }}</strong>
+        @if (settings.nextOpening(); as next) {
+          <span class="closed-banner__when">
+            {{
+              'home.closed.reopens'
+                | translate
+                  : {
+                      time: next.isToday
+                        ? next.time
+                        : ('days.' + next.dayIndex | translate) + ' ' + next.time
+                    }
+            }}
+          </span>
+        }
+        <p>{{ 'home.closed.text' | translate }}</p>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ═══════════════ Pourquoi nous choisir ═══════════════ -->
+<section class="section">
+  <div class="container">
+    <header class="section__head">
+      <h2 class="section__title">{{ 'home.why.title' | translate }}</h2>
+      <p class="section__subtitle">{{ 'home.why.subtitle' | translate }}</p>
+    </header>
+
+    <div class="features">
+      @for (f of features; track f.key) {
+        <article class="feature">
+          <div class="feature__icon" aria-hidden="true">{{ f.icon }}</div>
+          <h3 class="feature__title">{{ 'home.why.' + f.key + '.title' | translate }}</h3>
+          <p class="feature__text">{{ 'home.why.' + f.key + '.text' | translate }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ Avis clients ═══════════════ -->
+<section class="section reviews-section">
+  <div class="container">
+    <header class="section__head">
+      <h2 class="section__title">{{ 'home.reviews.title' | translate }}</h2>
+      <p class="section__subtitle">{{ 'home.reviews.subtitle' | translate }}</p>
+    </header>
+
+    <div class="reviews">
+      @for (r of reviews; track r.key) {
+        <figure class="review">
+          <div class="review__stars" [attr.aria-label]="r.stars + '/5'">
+            @for (s of starsOf(r.stars); track s) {
+              <span aria-hidden="true">★</span>
+            }
+          </div>
+
+          <blockquote class="review__text">
+            {{ 'home.reviews.' + r.key + '.text' | translate }}
+          </blockquote>
+
+          <figcaption class="review__author">
+            <strong>{{ 'home.reviews.' + r.key + '.author' | translate }}</strong>
+            <span>{{ 'home.reviews.' + r.key + '.city' | translate }}</span>
+          </figcaption>
+        </figure>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ Appel à l'action final ═══════════════ -->
+<section class="cta-band">
+  <div class="container cta-band__inner">
+    <h2 class="cta-band__title">{{ 'home.title' | translate }}</h2>
+    <a routerLink="/menu" class="btn btn--gold">{{ 'home.cta' | translate }}</a>
+  </div>
+</section>

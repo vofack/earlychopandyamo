@@ -1,0 +1,138 @@
+@use 'styles/tokens' as *;
+
+.footer {
+  margin-top: auto;
+  background: $ink;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.footer__inner {
+  display: grid;
+  gap: 40px;
+  padding-block: 56px 40px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) { grid-template-columns: 1.4fr 1fr 1fr; }
+  @include up($bp-lg) { grid-template-columns: 1.6fr 1fr 1fr 1.2fr; }
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: $font-display;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.footer__tagline {
+  font-size: 0.94rem;
+  line-height: 1.65;
+  max-width: 34ch;
+}
+
+.footer__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: $r-full;
+  flex-shrink: 0;
+
+  &--open {
+    background: #4ADE80;
+    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.22);
+  }
+
+  &--closed { background: #94A3B8; }
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+
+  a {
+    font-size: 0.94rem;
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    transition: color $t-fast $ease-out;
+    width: fit-content;
+    @include focus-ring(#fff);
+
+    &:hover {
+      color: $gold;
+      text-decoration: underline;
+    }
+  }
+}
+
+.footer__heading {
+  font-family: $font-body;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $gold;      /* aplat décoratif sur fond très foncé : contraste 7.9:1 */
+  margin-bottom: 4px;
+}
+
+.footer__wa {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.footer__city {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2px;
+}
+
+/* ---------- Horaires ---------- */
+.hours {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hours__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.86rem;
+  padding: 3px 0;
+
+  &--today {
+    color: #fff;
+    font-weight: 600;
+  }
+}
+
+.hours__day { color: inherit; }
+
+.hours__time {
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Bas de page ---------- */
+.footer__bottom {
+  padding-block: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+}

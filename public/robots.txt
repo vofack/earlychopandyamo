@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /menu
+
+# Espace restaurant et pages contenant des données personnelles.
+Disallow: /admin
+Disallow: /suivi
+Disallow: /checkout
+
+Sitemap: https://earlychopandyamo-a6214.web.app/sitemap.xml

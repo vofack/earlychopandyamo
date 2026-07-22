@@ -1,0 +1,175 @@
+<header class="head">
+  <div>
+    <h1 class="head__title">{{ 'admin.settings.title' | translate }}</h1>
+    <p class="head__subtitle">{{ 'admin.settings.subtitle' | translate }}</p>
+  </div>
+</header>
+
+<form [formGroup]="form" (ngSubmit)="save()" novalidate class="settings">
+  <!-- ═══════════ Commandes ═══════════ -->
+  <section class="panel">
+    <h2 class="panel__title">{{ 'admin.settings.isOpen' | translate }}</h2>
+
+    <label class="bigcheck">
+      <input type="checkbox" formControlName="isOpen" />
+      <span class="bigcheck__body">
+        <strong>{{ 'admin.settings.isOpen' | translate }}</strong>
+        <span>{{ 'admin.settings.isOpenHint' | translate }}</span>
+      </span>
+    </label>
+
+    <div class="form-row">
+      <div class="field">
+        <label class="field__label" for="deliveryFee">
+          {{ 'admin.settings.deliveryFee' | translate }}
+        </label>
+        <input
+          id="deliveryFee"
+          type="number"
+          class="field__control"
+          formControlName="deliveryFee"
+          min="0"
+          step="0.5"
+        />
+        <p class="field__hint">{{ 'admin.settings.deliveryFeeHint' | translate }}</p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="minOrder">
+          {{ 'admin.settings.minOrder' | translate }}
+        </label>
+        <input
+          id="minOrder"
+          type="number"
+          class="field__control"
+          formControlName="minOrder"
+          min="0"
+          step="1"
+        />
+        <p class="field__hint">{{ 'admin.settings.minOrderHint' | translate }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ Horaires ═══════════ -->
+  <section class="panel">
+    <h2 class="panel__title">{{ 'admin.settings.hours' | translate }}</h2>
+
+    <div formArrayName="openingHours" class="days">
+      @for (day of weekDays; track day) {
+        <div class="day" [formGroupName]="day" [class.day--closed]="dayControl(day).closed">
+          <span class="day__name">{{ 'days.' + day | translate }}</span>
+
+          <label class="day__closed">
+            <input type="checkbox" formControlName="closed" />
+            <span>{{ 'admin.settings.closedDay' | translate }}</span>
+          </label>
+
+          <!-- Les champs horaires disparaissent quand le jour est fermé :
+               ils n'auraient aucun sens et encombreraient la lecture. -->
+          @if (!dayControl(day).closed) {
+            <div class="day__times">
+              <label class="sr-only" [attr.for]="'open-' + day">
+                {{ 'admin.settings.openAt' | translate }}
+              </label>
+              <input
+                [id]="'open-' + day"
+                type="time"
+                class="field__control day__time"
+                formControlName="open"
+              />
+
+              <span aria-hidden="true">–</span>
+
+              <label class="sr-only" [attr.for]="'close-' + day">
+                {{ 'admin.settings.closeAt' | translate }}
+              </label>
+              <input
+                [id]="'close-' + day"
+                type="time"
+                class="field__control day__time"
+                formControlName="close"
+              />
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ═══════════ Zone de livraison ═══════════ -->
+  <section class="panel">
+    <h2 class="panel__title">{{ 'admin.settings.zone' | translate }}</h2>
+
+    <div class="field">
+      <label class="field__label" for="zone">{{ 'admin.settings.zone' | translate }}</label>
+      <input
+        id="zone"
+        type="text"
+        class="field__control"
+        formControlName="deliveryPostalCodes"
+        placeholder="H2X, H2J, H3B"
+      />
+      <p class="field__hint">{{ 'admin.settings.zoneHint' | translate }}</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ Parrainage & fidélité ═══════════ -->
+  <section class="panel" formGroupName="referral">
+    <h2 class="panel__title">{{ 'admin.settings.referral.title' | translate }}</h2>
+
+    <label class="bigcheck">
+      <input type="checkbox" formControlName="enabled" />
+      <span class="bigcheck__body">
+        <strong>{{ 'admin.settings.referral.enabled' | translate }}</strong>
+        <span>{{ 'admin.settings.referral.enabledHint' | translate }}</span>
+      </span>
+    </label>
+
+    <div class="form-row">
+      <div class="field">
+        <label class="field__label" for="ppr">
+          {{ 'admin.settings.referral.pointsPerReferral' | translate }}
+        </label>
+        <input id="ppr" type="number" class="field__control" formControlName="pointsPerReferral" min="0" step="1" />
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="pfm">
+          {{ 'admin.settings.referral.pointsForFreeMeal' | translate }}
+        </label>
+        <input id="pfm" type="number" class="field__control" formControlName="pointsForFreeMeal" min="1" step="1" />
+        <p class="field__hint">{{ 'admin.settings.referral.pointsForFreeMealHint' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label class="field__label" for="fmc">
+          {{ 'admin.settings.referral.freeMealCredit' | translate }}
+        </label>
+        <input id="fmc" type="number" class="field__control" formControlName="freeMealCredit" min="0" step="1" />
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="wpa">
+          {{ 'admin.settings.referral.welcomePerkAmount' | translate }}
+        </label>
+        <input id="wpa" type="number" class="field__control" formControlName="welcomePerkAmount" min="0" step="1" />
+        <p class="field__hint">{{ 'admin.settings.referral.welcomePerkHint' | translate }}</p>
+      </div>
+    </div>
+
+    <label class="bigcheck">
+      <input type="checkbox" formControlName="emailOnStatusChange" />
+      <span class="bigcheck__body">
+        <strong>{{ 'admin.settings.referral.emailOnStatus' | translate }}</strong>
+        <span>{{ 'admin.settings.referral.emailOnStatusHint' | translate }}</span>
+      </span>
+    </label>
+  </section>
+
+  <button type="submit" class="btn btn--primary" [disabled]="saving()">
+    {{ (saving() ? 'common.saving' : 'common.save') | translate }}
+  </button>
+</form>

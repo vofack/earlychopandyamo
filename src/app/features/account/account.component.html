@@ -1,0 +1,137 @@
+<div class="account container">
+  @if (account.profile(); as profile) {
+    <!-- ═══════════ En-tête profil ═══════════ -->
+    <header class="profile">
+      <div class="profile__avatar" aria-hidden="true">
+        @if (profile.photoURL) {
+          <img [src]="profile.photoURL" alt="" referrerpolicy="no-referrer" />
+        } @else {
+          <span>{{ (profile.displayName || 'C').charAt(0) }}</span>
+        }
+      </div>
+      <div class="profile__id">
+        <h1 class="profile__name">{{ profile.displayName || ('account.title' | translate) }}</h1>
+        <p class="profile__email">{{ profile.email }}</p>
+      </div>
+      <button type="button" class="btn btn--ghost btn--sm profile__out" (click)="signOut()">
+        {{ 'account.signOut' | translate }}
+      </button>
+    </header>
+
+    <div class="grid">
+      <!-- ═══════════ Fidélité ═══════════ -->
+      @if (referralEnabled()) {
+        <section class="card loyalty">
+          <h2 class="card__title">{{ 'account.loyalty.title' | translate }}</h2>
+
+          <div class="loyalty__points">
+            <span class="loyalty__value">{{ account.points() }}</span>
+            <span class="loyalty__label">{{ 'account.loyalty.points' | translate }}</span>
+          </div>
+
+          @if (account.freeMeals() > 0) {
+            <p class="loyalty__meals">
+              🎁 {{ 'account.loyalty.freeMeals' | translate: { count: account.freeMeals() } }}
+            </p>
+          }
+
+          <div
+            class="progress"
+            role="progressbar"
+            [attr.aria-valuenow]="progressPercent()"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div class="progress__fill" [style.width.%]="progressPercent()"></div>
+          </div>
+          <p class="loyalty__next">
+            {{ 'account.loyalty.toNext' | translate: { count: account.pointsToNext() } }}
+          </p>
+        </section>
+
+        <!-- ═══════════ Parrainage ═══════════ -->
+        <section class="card referral">
+          <h2 class="card__title">{{ 'referral.title' | translate }}</h2>
+          <p class="referral__intro">
+            {{
+              'referral.intro'
+                | translate
+                  : {
+                      perk: settings.settings().referral.welcomePerkAmount,
+                      threshold: settings.settings().referral.pointsForFreeMeal
+                    }
+            }}
+          </p>
+
+          <div class="referral__code">
+            <span class="referral__code-label">{{ 'referral.yourCode' | translate }}</span>
+            <strong class="referral__code-value">{{ account.referralCode() }}</strong>
+          </div>
+
+          <div class="referral__actions">
+            <button type="button" class="btn btn--primary btn--sm" (click)="share()">
+              {{ 'referral.share' | translate }}
+            </button>
+            <button type="button" class="btn btn--ghost btn--sm" (click)="copyLink()">
+              {{ (justCopied() ? 'referral.copied' : 'referral.copyLink') | translate }}
+            </button>
+          </div>
+        </section>
+      }
+
+      <!-- ═══════════ Mes commandes ═══════════ -->
+      <section class="card orders">
+        <h2 class="card__title">{{ 'account.orders.title' | translate }}</h2>
+
+        @if (myOrders().length === 0) {
+          <div class="orders__empty">
+            <span aria-hidden="true">🍽️</span>
+            <p>{{ 'account.orders.empty' | translate }}</p>
+            <a routerLink="/menu" class="btn btn--primary btn--sm">
+              {{ 'cart.empty.cta' | translate }}
+            </a>
+          </div>
+        } @else {
+          <ul class="orders__list">
+            @for (order of myOrders(); track order.id) {
+              <li class="oitem">
+                <a class="oitem__link" [routerLink]="['/suivi', order.id]">
+                  <div class="oitem__head">
+                    <span class="oitem__id">#{{ shortId(order.id) }}</span>
+                    <span class="badge" [class]="'badge--' + order.status">
+                      {{ 'status.' + order.status | translate }}
+                    </span>
+                  </div>
+
+                  <!-- Mini-frise : rappelle en un coup d'œil l'avancement,
+                       mis à jour en direct quand l'admin change le statut. -->
+                  <div class="oitem__steps" aria-hidden="true">
+                    @for (step of steps; track step; let i = $index) {
+                      <span class="dot" [class.dot--done]="i <= currentStep(order)"></span>
+                    }
+                  </div>
+
+                  <div class="oitem__foot">
+                    @if (order.createdAt) {
+                      <span class="oitem__date">
+                        {{ order.createdAt.toDate() | date: 'short' : undefined : language.locale() }}
+                      </span>
+                    }
+                    <span class="oitem__total">
+                      {{ order.total | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+                    </span>
+                  </div>
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+    </div>
+  } @else {
+    <!-- Profil pas encore chargé (création en cours à la 1re connexion). -->
+    <div class="account__loading">
+      <p>{{ 'common.loading' | translate }}</p>
+    </div>
+  }
+</div>

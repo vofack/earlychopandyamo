@@ -1,0 +1,90 @@
+@use 'styles/tokens' as *;
+
+.toasts {
+  position: fixed;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+
+  /* Sur mobile les notifications viennent du haut : le bas de l'écran est
+     déjà occupé par la barre panier. */
+  top: 78px;
+  left: 16px;
+  right: 16px;
+
+  @include up($bp-md) {
+    top: auto;
+    left: auto;
+    right: 28px;
+    bottom: 28px;
+    max-width: 380px;
+  }
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: $surface;
+  border: 1px solid $line;
+  border-left: 4px solid $ink-soft;
+  border-radius: $r-md;
+  box-shadow: $shadow-lg;
+  pointer-events: auto;
+  @include enter(fade-up, $t-base);
+
+  &--success { border-left-color: $success; }
+  &--error   { border-left-color: $danger; }
+  &--info    { border-left-color: $blue-dark; }
+}
+
+.toast__icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: $r-full;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+
+  .toast--success & { background: $success; }
+  .toast--error &   { background: $danger; }
+  .toast--info &    { background: $blue-dark; }
+}
+
+.toast__text {
+  flex: 1;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: $ink;
+}
+
+.toast__close {
+  @include tap-target;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  min-width: 32px;
+  min-height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: $r-full;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: $ink-faint;
+  transition: background-color $t-fast $ease-out, color $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    background: $line-soft;
+    color: $ink;
+  }
+}

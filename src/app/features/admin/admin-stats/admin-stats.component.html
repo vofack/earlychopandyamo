@@ -1,0 +1,118 @@
+<header class="head">
+  <div>
+    <h1 class="head__title">{{ 'admin.stats.title' | translate }}</h1>
+  </div>
+</header>
+
+@if (orders.loading()) {
+  <div class="stats">
+    <app-skeleton variant="stat" [count]="4" [label]="'common.loading' | translate" />
+  </div>
+} @else {
+  <!-- ═══════════ Indicateurs ═══════════ -->
+  <div class="stats">
+    <article class="stat stat--gold">
+      <p class="stat__label">{{ 'admin.stats.revenueTotal' | translate }}</p>
+      <p class="stat__value">
+        {{ revenueTotal() | currency: 'CAD' : 'symbol-narrow' : '1.0-0' : language.locale() }}
+      </p>
+    </article>
+
+    <article class="stat">
+      <p class="stat__label">{{ 'admin.stats.revenueMonth' | translate }}</p>
+      <p class="stat__value">
+        {{ revenueMonth() | currency: 'CAD' : 'symbol-narrow' : '1.0-0' : language.locale() }}
+      </p>
+    </article>
+
+    <article class="stat">
+      <p class="stat__label">{{ 'admin.stats.ordersTotal' | translate }}</p>
+      <p class="stat__value">{{ ordersTotal() }}</p>
+    </article>
+
+    <article class="stat">
+      <p class="stat__label">{{ 'admin.stats.ordersMonth' | translate }}</p>
+      <p class="stat__value">{{ ordersMonth() }}</p>
+    </article>
+  </div>
+
+  <div class="grid">
+    <!-- ═══════════ Top 5 des plats ═══════════ -->
+    <section class="panel">
+      <h2 class="panel__title">{{ 'admin.stats.topDishes' | translate }}</h2>
+
+      @if (topDishes().length === 0) {
+        <p class="empty-note">{{ 'admin.stats.topDishesEmpty' | translate }}</p>
+      } @else {
+        <ul class="tops">
+          @for (dish of topDishes(); track $index; let i = $index) {
+            <li class="top">
+              <span class="top__rank">{{ i + 1 }}</span>
+              <span class="top__emoji" aria-hidden="true">{{ dish.emoji }}</span>
+
+              <div class="top__body">
+                <p class="top__name">{{ dish.name | localized }}</p>
+
+                <!-- La barre est décorative : le chiffre exact est déjà donné
+                     en texte juste à côté, donc aria-hidden. -->
+                <div class="top__bar" aria-hidden="true">
+                  <span class="top__fill" [style.width.%]="dish.percent"></span>
+                </div>
+              </div>
+
+              <span class="top__count">
+                {{ 'admin.stats.ordersSold' | translate: { count: dish.count } }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <!-- ═══════════ 7 derniers jours ═══════════ -->
+    <section class="panel">
+      <h2 class="panel__title">{{ 'admin.stats.last7Days' | translate }}</h2>
+
+      @if (!hasChartData()) {
+        <p class="empty-note">{{ 'admin.stats.noData' | translate }}</p>
+      } @else {
+        <!-- Graphique en CSS pur — aucune bibliothèque de charts, donc aucun
+             poids supplémentaire dans le bundle. -->
+        <div class="chart">
+          @for (day of last7Days(); track day.date.getTime()) {
+            <div class="chart__col">
+              <span class="chart__value">{{ day.count }}</span>
+
+              <div
+                class="chart__bar"
+                [style.height.%]="day.percent"
+                [class.is-zero]="day.count === 0"
+                [attr.aria-label]="
+                  'admin.stats.chartLabel'
+                    | translate
+                      : {
+                          count: day.count,
+                          date: (day.date | date: 'shortDate' : undefined : language.locale())
+                        }
+                "
+                role="img"
+              ></div>
+
+              <span class="chart__day">
+                {{ day.date | date: 'EEEEEE' : undefined : language.locale() }}
+              </span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </div>
+
+  <!-- ═══════════ Panier moyen ═══════════ -->
+  <section class="panel avg">
+    <p class="avg__label">{{ 'admin.stats.average' | translate }}</p>
+    <p class="avg__value">
+      {{ averageBasket() | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+    </p>
+  </section>
+}

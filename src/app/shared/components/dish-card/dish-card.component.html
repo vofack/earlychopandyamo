@@ -1,0 +1,99 @@
+<article class="dish" [class.dish--out]="!dish().isAvailable">
+  <div class="dish__media">
+    @if (showImage()) {
+      <!-- `loading="lazy"` + dimensions explicites : les images hors écran ne
+           sont pas téléchargées, et la place est réservée à l'avance pour
+           éviter tout décalage de mise en page à l'arrivée de la photo. -->
+      <img
+        class="dish__img"
+        [src]="dish().imageUrl"
+        [alt]="displayName()"
+        loading="lazy"
+        decoding="async"
+        width="400"
+        height="300"
+        (error)="imageFailed.set(true)"
+      />
+    } @else {
+      <div class="dish__emoji" aria-hidden="true">{{ dish().emoji }}</div>
+    }
+
+    <div class="dish__flags">
+      @if (dish().isPopular) {
+        <span class="badge badge--gold">★ {{ 'menu.popular' | translate }}</span>
+      }
+      @if (dish().isVegetarian) {
+        <span class="badge badge--veg">🌱 {{ 'menu.vegetarian' | translate }}</span>
+      }
+      @if (dish().isSpicy) {
+        <span class="badge badge--spicy">🌶️ {{ 'menu.spicy' | translate }}</span>
+      }
+    </div>
+
+    @if (!dish().isAvailable) {
+      <div class="dish__soldout">
+        <span>{{ 'menu.unavailable' | translate }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="dish__body">
+    <h3 class="dish__name">{{ dish().name | localized }}</h3>
+    <p class="dish__desc">{{ dish().description | localized }}</p>
+
+    @if (dish().allergens?.length) {
+      <!-- Information de sécurité, pas un ornement : elle reste visible sur la
+           carte plutôt que cachée derrière une interaction. -->
+      <p class="dish__allergens">
+        <span class="dish__allergens-label">{{ 'menu.allergensLabel' | translate }} :</span>
+        @for (a of dish().allergens; track a; let last = $last) {
+          <span>{{ 'allergens.' + a | translate }}{{ last ? '' : ', ' }}</span>
+        }
+      </p>
+    }
+
+    <div class="dish__foot">
+      <span class="dish__price">
+        {{ dish().price | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+      </span>
+
+      @if (dish().isAvailable) {
+        @if (quantity() === 0) {
+          <button
+            type="button"
+            class="btn btn--primary btn--sm"
+            (click)="add()"
+            [attr.aria-label]="'menu.add' | translate: { name: displayName() }"
+          >
+            +
+            <span class="dish__addlabel">{{ 'cart.title' | translate }}</span>
+          </button>
+        } @else {
+          <div class="stepper">
+            <button
+              type="button"
+              class="stepper__btn"
+              (click)="decrement()"
+              [attr.aria-label]="'menu.decrease' | translate: { name: displayName() }"
+            >
+              −
+            </button>
+
+            <!-- La quantité change sans rechargement : `aria-live` la fait
+                 annoncer à chaque incrément. -->
+            <span class="stepper__value" aria-live="polite">{{ quantity() }}</span>
+
+            <button
+              type="button"
+              class="stepper__btn"
+              (click)="add()"
+              [attr.aria-label]="'menu.increase' | translate: { name: displayName() }"
+            >
+              +
+            </button>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</article>

@@ -1,0 +1,103 @@
+@use 'styles/tokens' as *;
+
+.login {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(160deg, $blue-tint, $canvas 55%, $gold-light);
+}
+
+.login__card {
+  width: 100%;
+  max-width: 420px;
+  padding: 38px 32px 30px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-xl;
+  box-shadow: $shadow-lg;
+  @include enter(fade-up, $t-slow);
+}
+
+.login__brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 26px;
+}
+
+.login__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, $blue, $blue-dark);
+  border-radius: $r-md;
+  box-shadow: $shadow-blue;
+}
+
+.login__name {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: $ink;
+}
+
+.login__title {
+  font-size: 1.6rem;
+  margin-bottom: 7px;
+  color: $ink;
+}
+
+.login__subtitle {
+  font-size: 0.93rem;
+  color: $ink-soft;
+  margin-bottom: 26px;
+}
+
+.login__error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 15px;
+  margin-bottom: 18px;
+  background: $danger-bg;
+  border: 1px solid rgba(198, 40, 40, 0.3);
+  border-radius: $r-md;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: $danger;
+  @include enter(fade-in, $t-fast);
+}
+
+.login__forgot {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: $blue-dark;
+  text-align: center;
+  @include focus-ring;
+
+  &:hover:not(:disabled) { text-decoration: underline; }
+  &:disabled { opacity: 0.6; }
+}
+
+.login__back {
+  display: block;
+  margin-top: 22px;
+  text-align: center;
+  font-size: 0.88rem;
+  color: $ink-soft;
+  text-decoration: none;
+
+  &:hover {
+    color: $blue-dark;
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,503 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "back": "Back",
+    "close": "Close",
+    "retry": "Try again",
+    "error": "Something went wrong",
+    "errorNetwork": "Can't connect. Check your network and try again.",
+    "required": "required",
+    "optional": "optional"
+  },
+
+  "nav": {
+    "brand": "EarlyChop & Yamo",
+    "tagline": "Authentic African cuisine",
+    "home": "Home",
+    "menu": "Menu",
+    "cart": "Cart",
+    "admin": "Admin",
+    "skipToContent": "Skip to main content",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "openCart": "Open cart",
+    "language": "Language",
+    "switchToEnglish": "Passer en français",
+    "itemsInCart": "{{count}} item(s) in cart"
+  },
+
+  "home": {
+    "badge": "100% FREE delivery",
+    "title": "The flavours of Africa, delivered to you",
+    "subtitle": "Home-cooked dishes made fresh the same day, delivered free anywhere in Montérégie.",
+    "cta": "See our menu",
+    "ctaSecondary": "Get in touch",
+    "pills": {
+      "delivery": "Free delivery",
+      "time": "30-45 min",
+      "fresh": "100% fresh",
+      "homemade": "Homemade"
+    },
+    "closed": {
+      "title": "We're closed right now",
+      "reopens": "We reopen {{time}}",
+      "text": "Feel free to browse the menu — ordering resumes when we reopen."
+    },
+    "why": {
+      "title": "Why order from us",
+      "subtitle": "What makes every order different",
+      "item1": { "title": "100% free delivery", "text": "No delivery fee, ever. The price you see is the price you pay." },
+      "item2": { "title": "Authentic cooking", "text": "Traditional family recipes, cooked properly with no shortcuts." },
+      "item3": { "title": "Fresh ingredients", "text": "We shop every morning. Nothing frozen, nothing reheated." },
+      "item4": { "title": "Delivered in 30-45 min", "text": "Your meal leaves the kitchen the moment it's ready — still hot." },
+      "item5": { "title": "Flexible payment", "text": "Cash, Interac or card — you choose when it arrives." },
+      "item6": { "title": "Live order tracking", "text": "A tracking link shows your order's progress in real time." }
+    },
+    "reviews": {
+      "title": "What our customers say",
+      "subtitle": "Hundreds of meals delivered across Montérégie",
+      "r1": { "text": "Best poulet DG I've had since moving to Quebec. It tastes like someone's home kitchen.", "author": "Aminata D.", "city": "Villeray" },
+      "r2": { "text": "Ordered at 6pm, arrived 6:35pm, still piping hot. And delivery really is free.", "author": "Marc-Olivier T.", "city": "Rosemont" },
+      "r3": { "text": "Generous portions and the spicing is spot on. This is our Friday night now.", "author": "Sarah B.", "city": "Le Plateau" }
+    }
+  },
+
+  "menu": {
+    "title": "Our menu",
+    "subtitle": "Everything is cooked the same day. Free delivery, no minimum.",
+    "searchLabel": "Search for a dish",
+    "searchPlaceholder": "Search a dish, an ingredient…",
+    "clearSearch": "Clear search",
+    "categories": {
+      "all": "All",
+      "main": "Main course",
+      "starter": "Starter",
+      "dessert": "Dessert",
+      "drink": "Drink"
+    },
+    "filters": {
+      "label": "Dietary filters",
+      "vegetarian": "Vegetarian",
+      "spicy": "Spicy",
+      "noPeanut": "Peanut-free",
+      "clear": "Clear filters"
+    },
+    "resultCount": "{{count}} dish(es)",
+    "popular": "Popular",
+    "unavailable": "Sold out",
+    "vegetarian": "Vegetarian",
+    "spicy": "Spicy",
+    "add": "Add {{name}} to cart",
+    "increase": "Add one {{name}}",
+    "decrease": "Remove one {{name}}",
+    "inCart": "{{count}} in cart",
+    "allergensLabel": "Contains",
+    "empty": {
+      "title": "No dish matches",
+      "text": "Try another keyword or remove a few filters.",
+      "cta": "Reset"
+    },
+    "noDishes": {
+      "title": "Menu coming soon",
+      "text": "No dishes published yet. Check back shortly!"
+    },
+    "loadError": {
+      "title": "Menu unavailable",
+      "text": "We couldn't load the dishes right now."
+    }
+  },
+
+  "cart": {
+    "title": "Your cart",
+    "empty": {
+      "title": "Your cart is empty",
+      "text": "Browse the menu and add your favourite dishes.",
+      "cta": "See the menu"
+    },
+    "remove": "Remove {{name}} from cart",
+    "quantityFor": "Quantity for {{name}}",
+    "subtotal": "Subtotal",
+    "delivery": "Delivery",
+    "free": "FREE",
+    "total": "Total",
+    "checkout": "Order now",
+    "minOrder": "Minimum order is {{amount}}. You need {{missing}} more.",
+    "closed": "Ordering is currently closed",
+    "viewCart": "View cart",
+    "itemCount": "{{count}} item(s)"
+  },
+
+  "checkout": {
+    "title": "Complete your order",
+    "subtitle": "One step away from dinner.",
+    "sectionContact": "Your details",
+    "sectionDelivery": "Delivery",
+    "sectionPayment": "Payment",
+    "form": {
+      "name": "Full name",
+      "namePlaceholder": "Aminata Diallo",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "emailHint": "We send your confirmation and tracking link here.",
+      "phone": "Phone",
+      "phonePlaceholder": "(438) 404-2421",
+      "phoneHint": "The driver calls you on arrival.",
+      "address": "Delivery address",
+      "addressPlaceholder": "1234 Saint-Denis St, apt 3, Montérégie",
+      "postalCode": "Postal code",
+      "postalCodePlaceholder": "H2X 1K5",
+      "payment": "Payment method",
+      "paymentHint": "You pay on delivery.",
+      "notes": "Special instructions",
+      "notesPlaceholder": "Door code, allergies, cooking preferences…"
+    },
+    "payment": {
+      "cash": "Cash",
+      "interac": "Interac"
+    },
+    "errors": {
+      "nameRequired": "Please enter your name.",
+      "nameMin": "Name must be at least 2 characters.",
+      "emailRequired": "Please enter your email.",
+      "emailInvalid": "That email doesn't look right.",
+      "phoneRequired": "Please enter your phone number.",
+      "phoneInvalid": "Quebec number expected, e.g. (438) 404-2421.",
+      "addressRequired": "Please enter your delivery address.",
+      "addressMin": "That address looks too short.",
+      "postalRequired": "Please enter your postal code.",
+      "postalInvalid": "Expected format: H2X 1K5.",
+      "postalOutOfZone": "We don't deliver to that postal code yet.",
+      "paymentRequired": "Please choose a payment method.",
+      "summary": "Please fix the highlighted fields below."
+    },
+    "summary": {
+      "title": "Order summary",
+      "items": "Items",
+      "edit": "Edit cart"
+    },
+    "submit": "Confirm my order",
+    "submitting": "Sending…",
+    "emptyCart": {
+      "title": "Your cart is empty",
+      "text": "Add at least one dish before ordering.",
+      "cta": "See the menu"
+    },
+    "closed": {
+      "title": "We're not taking orders right now",
+      "text": "The restaurant is closed. Come back when we reopen to complete your order — your cart is saved.",
+      "reopens": "Reopening {{time}}"
+    },
+    "failed": {
+      "title": "Submission failed",
+      "text": "Your order couldn't be saved. Check your connection and try again — nothing was charged."
+    },
+    "loyalty": {
+      "welcomeApplied": "Welcome perk: ${{amount}} off this order.",
+      "welcomeLabel": "Welcome",
+      "useFreeMeal": "Use my free meal",
+      "freeMealHint": "Applies ${{amount}} off and uses one free meal.",
+      "freeMealLabel": "Free meal",
+      "discounts": "Discounts"
+    }
+  },
+
+  "success": {
+    "title": "Order confirmed!",
+    "text": "Thank you {{name}}, we're cooking your meal.",
+    "orderNumber": "Order number",
+    "estimate": "Estimated delivery in {{time}} minutes",
+    "emailSent": "A confirmation is on its way to {{email}}. Check your spam folder as well.",
+    "emailFailed": "Your order is saved, but the confirmation email couldn't be sent. Please note your order number.",
+    "track": "Track my order",
+    "whatsapp": "Message us on WhatsApp",
+    "home": "Back to home"
+  },
+
+  "tracking": {
+    "title": "Order tracking",
+    "orderNumber": "Order #{{id}}",
+    "placedAt": "Placed on {{date}}",
+    "estimate": "Estimated delivery in {{time}} minutes",
+    "steps": {
+      "new": "Order received",
+      "confirmed": "Confirmed by the restaurant",
+      "preparing": "Being prepared",
+      "delivered": "Delivered"
+    },
+    "stepsHint": {
+      "new": "We've received your order.",
+      "confirmed": "The restaurant confirmed your order.",
+      "preparing": "Your meal is in the kitchen.",
+      "delivered": "Enjoy your meal!"
+    },
+    "deliveryTo": "Delivering to",
+    "yourOrder": "Your order",
+    "total": "Total",
+    "notFound": {
+      "title": "Order not found",
+      "text": "This tracking link isn't valid. Check the link from your confirmation email.",
+      "cta": "Back to home"
+    },
+    "help": "Any question? Message us on WhatsApp."
+  },
+
+  "account": {
+    "title": "My account",
+    "signIn": "Sign in",
+    "myAccount": "My account",
+    "signOut": "Sign out",
+    "errors": {
+      "notEnabled": "Google sign-in isn't enabled yet. (Firebase Console → Authentication → Google)",
+      "unauthorizedDomain": "This domain isn't authorized for sign-in. (Authentication → Settings → Authorized domains)",
+      "popupBlocked": "The sign-in window was blocked. Allow pop-ups for this site and try again."
+    },
+    "loyalty": {
+      "title": "My rewards",
+      "points": "points",
+      "freeMeals": "{{count}} free meal(s) available",
+      "toNext": "{{count}} more point(s) until your next free meal"
+    },
+    "orders": {
+      "title": "My orders",
+      "empty": "You don't have any orders yet."
+    }
+  },
+
+  "referral": {
+    "title": "Refer your friends",
+    "intro": "Share your code: your friend gets ${{perk}} off their 1st order, and you earn a point for every referred friend delivered. {{threshold}} points = a free meal!",
+    "yourCode": "Your code",
+    "share": "Share my link",
+    "copyLink": "Copy link",
+    "copied": "Link copied!"
+  },
+
+  "footer": {
+    "tagline": "Authentic African cuisine, delivered free across Montérégie.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "hours": "Opening hours",
+    "openNow": "Open now",
+    "closedNow": "Closed",
+    "closedDay": "Closed",
+    "rights": "All rights reserved.",
+    "adminLink": "Restaurant login"
+  },
+
+  "days": {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday"
+  },
+
+  "allergens": {
+    "peanut": "Peanut",
+    "gluten": "Gluten",
+    "dairy": "Dairy",
+    "egg": "Egg",
+    "fish": "Fish",
+    "shellfish": "Shellfish",
+    "soy": "Soy",
+    "nuts": "Tree nuts"
+  },
+
+  "status": {
+    "new": "New",
+    "confirmed": "Confirmed",
+    "preparing": "Preparing",
+    "delivered": "Delivered"
+  },
+
+  "admin": {
+    "login": {
+      "title": "Restaurant login",
+      "subtitle": "Sign in to manage orders and the menu.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "errorRequired": "Email and password are required.",
+      "errorInvalid": "Incorrect email or password.",
+      "errorTooMany": "Too many attempts. Try again in a few minutes.",
+      "backToSite": "Back to site",
+      "forgot": "Forgot password?",
+      "resetSending": "Sending…",
+      "resetSent": "If this account exists, a reset email has just been sent. Check your spam folder too.",
+      "resetNeedEmail": "Enter your email above first."
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "orders": "Orders",
+      "menu": "Menu",
+      "customers": "Customers",
+      "settings": "Settings",
+      "stats": "Statistics",
+      "logout": "Sign out",
+      "viewSite": "View site"
+    },
+    "customers": {
+      "title": "Customers",
+      "count": "{{count}} customer account(s)",
+      "search": "Search a customer, email, code…",
+      "customer": "Customer",
+      "code": "Code",
+      "referredBy": "Referred by",
+      "orders": "Orders",
+      "spent": "Spent",
+      "points": "Points",
+      "freeMeals": "Free meals",
+      "adjust": "Adjust",
+      "custom": "Other…",
+      "adjustPrompt": "Adjust {{name}}'s points (number, negative to remove):",
+      "empty": { "title": "No customers", "text": "Customer accounts will appear here after the first sign-ups." }
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Here's how the restaurant is doing.",
+      "totalOrders": "Total orders",
+      "revenue": "Revenue",
+      "dishes": "Dishes on menu",
+      "average": "Average order",
+      "newOrders": "{{count}} new order(s)"
+    },
+    "orders": {
+      "title": "Orders",
+      "live": "Live updating",
+      "newCount": "{{count}} new",
+      "filterAll": "All",
+      "empty": { "title": "No orders yet", "text": "New orders appear here automatically." },
+      "emptyFiltered": { "title": "No orders with this status", "text": "Change the filter to see other orders." },
+      "client": "Customer",
+      "contact": "Contact",
+      "address": "Address",
+      "items": "Items ordered",
+      "payment": "Payment",
+      "notes": "Instructions",
+      "total": "Total",
+      "placedAt": "Received",
+      "actions": {
+        "confirm": "Confirm",
+        "prepare": "Start preparing",
+        "deliver": "Mark delivered",
+        "delete": "Delete",
+        "call": "Call",
+        "expand": "Show details",
+        "collapse": "Hide details"
+      },
+      "deleteConfirm": "Permanently delete order #{{id}}? This cannot be undone."
+    },
+    "menu": {
+      "title": "Menu management",
+      "addTitle": "Add a dish",
+      "editTitle": "Edit dish",
+      "listTitle": "Existing dishes",
+      "listCount": "{{count}} dish(es)",
+      "tabFr": "Français",
+      "tabEn": "English",
+      "name": "Dish name",
+      "nameEnHint": "Leave empty to reuse the French text.",
+      "description": "Description",
+      "price": "Price ($)",
+      "category": "Category",
+      "emoji": "Emoji",
+      "emojiHint": "Shown when no photo is provided.",
+      "image": "Dish photo",
+      "imageUrl": "Image URL",
+      "imageUrlHint": "Upload to cloudinary.com (free) then paste the link here.",
+      "imageUrlAlt": "Or paste an image URL",
+      "imageUpload": "Choose a photo",
+      "imageUploadFailed": "Upload failed. Try again or paste a URL.",
+      "imageUploading": "Uploading… {{percent}}%",
+      "imageRemove": "Remove photo",
+      "imagePreview": "Preview",
+      "imageInvalid": "That URL doesn't point to a valid image.",
+      "popular": "Mark as popular",
+      "vegetarian": "Vegetarian",
+      "spicy": "Spicy",
+      "allergens": "Allergens",
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "add": "Add dish",
+      "update": "Save changes",
+      "cancelEdit": "Cancel editing",
+      "deleteConfirm": "Delete \"{{name}}\" from the menu? This cannot be undone.",
+      "empty": { "title": "No dishes", "text": "Add your first dish using the form." },
+      "errors": {
+        "nameRequired": "The French name is required.",
+        "descriptionRequired": "The French description is required.",
+        "priceRequired": "Price is required.",
+        "priceMin": "Price must be greater than 0."
+      }
+    },
+    "settings": {
+      "title": "Restaurant settings",
+      "subtitle": "These settings apply to the public site immediately.",
+      "isOpen": "Accept orders",
+      "isOpenHint": "Uncheck to pause ordering, even during opening hours.",
+      "deliveryFee": "Delivery fee ($)",
+      "deliveryFeeHint": "0 = free delivery.",
+      "minOrder": "Minimum order ($)",
+      "minOrderHint": "0 = no minimum.",
+      "hours": "Opening hours",
+      "closedDay": "Closed this day",
+      "openAt": "Opens",
+      "closeAt": "Closes",
+      "zone": "Delivery zone",
+      "zoneHint": "Served postal code prefixes, comma separated (e.g. H2X, H2J, H3B). Leave empty to deliver anywhere.",
+      "saved": "Settings saved.",
+      "referral": {
+        "title": "Referrals & rewards",
+        "enabled": "Enable the referral program",
+        "enabledHint": "Uncheck to hide referrals and free meals everywhere on the site.",
+        "pointsPerReferral": "Points per referral",
+        "pointsForFreeMeal": "Points for a free meal",
+        "pointsForFreeMealHint": "Number of successful referrals to unlock a free meal.",
+        "freeMealCredit": "Free meal value ($)",
+        "welcomePerkAmount": "Referred friend discount, 1st order ($)",
+        "welcomePerkHint": "Discount for a new customer who came via a referral link.",
+        "emailOnStatus": "Email on every status change",
+        "emailOnStatusHint": "Emails the customer as the order progresses (mind the ~100/day quota)."
+      }
+    },
+    "stats": {
+      "title": "Statistics",
+      "revenueTotal": "Total revenue",
+      "revenueMonth": "Revenue this month",
+      "ordersTotal": "Total orders",
+      "ordersMonth": "Orders this month",
+      "average": "Average order",
+      "topDishes": "Top 5 dishes",
+      "topDishesEmpty": "Not enough orders yet to build a ranking.",
+      "ordersSold": "{{count}} sold",
+      "last7Days": "Orders over the last 7 days",
+      "noData": "No data for this period.",
+      "chartLabel": "{{count}} order(s) on {{date}}"
+    }
+  },
+
+  "toast": {
+    "addedToCart": "{{name}} added to cart",
+    "removedFromCart": "{{name}} removed from cart",
+    "orderConfirmed": "Order confirmed",
+    "statusUpdated": "Status updated",
+    "orderDeleted": "Order deleted",
+    "dishAdded": "Dish added to menu",
+    "dishUpdated": "Dish updated",
+    "dishDeleted": "Dish deleted",
+    "settingsSaved": "Settings saved",
+    "loggedOut": "You've been signed out",
+    "dismiss": "Dismiss notification"
+  }
+}

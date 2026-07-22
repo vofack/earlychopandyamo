@@ -1,0 +1,25 @@
+rules_version = '2';
+
+// Règles Firebase Storage — utilisées uniquement si vous activez le plan
+// Blaze et passez `useFirebaseStorage` à true dans les environnements.
+// En mode gratuit (URL Cloudinary collées à la main), ce fichier reste inerte.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /dishes/{fileName} {
+      // Les photos de plats s'affichent sur le site public.
+      allow read: if true;
+
+      // Téléversement réservé à l'administrateur, borné à 5 Mo et aux images
+      // pour éviter qu'un compte compromis serve de dépôt de fichiers.
+      allow write: if request.auth != null
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,252 @@
+@use 'styles/tokens' as *;
+
+.tracking {
+  max-width: 780px;
+  padding-block: 40px 80px;
+
+  @include up($bp-md) { padding-block: 56px 96px; }
+}
+
+.tracking__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ═══════════ En-tête ═══════════ */
+.tracking__head {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.tracking__title {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  margin-bottom: 8px;
+  color: $ink;
+}
+
+.tracking__number {
+  display: inline-block;
+  padding: 6px 18px;
+  margin-bottom: 10px;
+  background: $blue-light;
+  color: $blue-darker;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  border-radius: $r-full;
+}
+
+.tracking__date {
+  font-size: 0.88rem;
+  color: $ink-soft;
+}
+
+.tracking__estimate {
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $gold-text;         /* 5.4:1 ✓ AA */
+}
+
+/* ═══════════ Timeline ═══════════ */
+.timeline {
+  list-style: none;
+  padding: 26px 22px;
+  margin: 0 0 28px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  box-shadow: $shadow-xs;
+}
+
+.tl {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  padding-bottom: 26px;
+
+  /* Trait vertical reliant les étapes. Tracé en ::before sur l'élément
+     plutôt qu'en bordure du marqueur, pour rester derrière le cercle. */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 36px;
+    bottom: 2px;
+    width: 2px;
+    background: $line;
+  }
+
+  &--last {
+    padding-bottom: 0;
+
+    &::before { display: none; }
+  }
+
+  &--done::before { background: $success; }
+}
+
+.tl__marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: $canvas;
+  border: 2px solid $line;
+  border-radius: $r-full;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: $ink-faint;
+  transition: all $t-base $ease-out;
+
+  .tl--done & {
+    background: $success;
+    border-color: $success;
+    color: #fff;
+  }
+
+  .tl--current & {
+    background: $blue-dark;
+    border-color: $blue-dark;
+    color: #fff;
+    animation: pulse-blue 2s ease-out infinite;
+
+    @media (prefers-reduced-motion: reduce) { animation: none; }
+  }
+}
+
+@keyframes pulse-blue {
+  0%   { box-shadow: 0 0 0 0 rgba(27, 143, 212, 0.5); }
+  70%  { box-shadow: 0 0 0 12px rgba(27, 143, 212, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(27, 143, 212, 0); }
+}
+
+.tl__body { padding-top: 5px; }
+
+.tl__label {
+  font-weight: 700;
+  font-size: 1rem;
+  color: $ink-faint;
+
+  .tl--done &,
+  .tl--current & { color: $ink; }
+}
+
+.tl__hint {
+  margin-top: 2px;
+  font-size: 0.87rem;
+  color: $ink-soft;
+
+  /* Seules l'étape en cours et les précédentes méritent l'attention. */
+  .tl:not(.tl--done):not(.tl--current) & { opacity: 0.55; }
+}
+
+.tl__time {
+  margin-top: 5px;
+  font-size: 0.79rem;
+  font-weight: 600;
+  color: $ink-faint;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════ Panneaux ═══════════ */
+.panels {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) { grid-template-columns: 1fr 1.25fr; }
+}
+
+.panel {
+  padding: 22px 20px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+}
+
+.panel__title {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $line;
+  color: $ink;
+}
+
+.panel__line {
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: $ink;
+
+  &--soft { color: $ink-soft; }
+}
+
+.panel__items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.panel__item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 0.91rem;
+}
+
+.panel__qty {
+  flex-shrink: 0;
+  min-width: 26px;
+  font-weight: 800;
+  color: $blue-dark;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel__name {
+  flex: 1;
+  color: $ink;
+}
+
+.panel__price {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: $ink;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid $line;
+  font-size: 0.95rem;
+  color: $ink-soft;
+
+  strong {
+    font-family: $font-display;
+    font-size: 1.3rem;
+    color: $gold-text;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ═══════════ Aide ═══════════ */
+.tracking__help {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 0.91rem;
+  color: $ink-soft;
+
+  a {
+    margin-left: 6px;
+    font-weight: 600;
+  }
+}

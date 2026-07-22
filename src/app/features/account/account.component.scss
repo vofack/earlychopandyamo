@@ -1,0 +1,269 @@
+@use 'styles/tokens' as *;
+// Les badges de statut (.badge--new/confirmed/preparing/delivered) sont
+// définis globalement dans styles.scss — pas besoin d'importer le partiel admin.
+
+.account {
+  padding-block: 40px 80px;
+
+  @include up($bp-md) { padding-block: 56px 96px; }
+}
+
+.account__loading {
+  padding: 80px 0;
+  text-align: center;
+  color: $ink-soft;
+}
+
+/* ═══════════ Profil ═══════════ */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.profile__avatar {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: $blue-light;
+  border-radius: $r-full;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+
+  span {
+    font-family: $font-display;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: $blue-darker;
+    text-transform: uppercase;
+  }
+}
+
+.profile__id { flex: 1; min-width: 0; }
+
+.profile__name {
+  font-size: clamp(1.4rem, 3.4vw, 1.9rem);
+  color: $ink;
+}
+
+.profile__email {
+  font-size: 0.9rem;
+  color: $ink-soft;
+}
+
+.profile__out { flex-shrink: 0; }
+
+/* ═══════════ Grille ═══════════ */
+.grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) { grid-template-columns: 1fr 1fr; }
+}
+
+.card {
+  padding: 22px 20px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  box-shadow: $shadow-xs;
+}
+
+.card__title {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: $ink;
+}
+
+/* La liste des commandes occupe toute la largeur sous les deux cartes. */
+.orders {
+  @include up($bp-md) { grid-column: 1 / -1; }
+}
+
+/* ═══════════ Fidélité ═══════════ */
+.loyalty__points {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.loyalty__value {
+  font-family: $font-display;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: $gold-text;
+  line-height: 1;
+}
+
+.loyalty__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $ink-soft;
+}
+
+.loyalty__meals {
+  margin: 10px 0;
+  padding: 9px 14px;
+  background: $gold-light;
+  border-radius: $r-md;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: $gold-text;
+}
+
+.progress {
+  height: 10px;
+  margin-top: 14px;
+  background: $line-soft;
+  border-radius: $r-full;
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, $blue, $gold);
+  border-radius: $r-full;
+  transition: width $t-slow $ease-out;
+}
+
+.loyalty__next {
+  margin-top: 8px;
+  font-size: 0.84rem;
+  color: $ink-soft;
+}
+
+/* ═══════════ Parrainage ═══════════ */
+.referral__intro {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: $ink-soft;
+  margin-bottom: 16px;
+}
+
+.referral__code {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  background: $blue-light;
+  border: 2px dashed $blue-dark;
+  border-radius: $r-md;
+}
+
+.referral__code-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $blue-darker;
+}
+
+.referral__code-value {
+  font-family: $font-display;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: $blue-darker;
+}
+
+.referral__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ═══════════ Mes commandes ═══════════ */
+.orders__empty {
+  padding: 30px 0;
+  text-align: center;
+  color: $ink-soft;
+
+  span { font-size: 2rem; }
+  p { margin: 10px 0 16px; }
+}
+
+.orders__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-sm) { grid-template-columns: repeat(2, 1fr); }
+  @include up($bp-lg) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.oitem__link {
+  display: block;
+  padding: 15px;
+  background: $canvas;
+  border: 1px solid $line;
+  border-radius: $r-md;
+  text-decoration: none;
+  transition: border-color $t-fast $ease-out, transform $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    border-color: $blue-dark;
+    transform: translateY(-2px);
+  }
+}
+
+.oitem__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.oitem__id {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: $blue-dark;
+}
+
+.oitem__steps {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.dot {
+  flex: 1;
+  height: 5px;
+  background: $line;
+  border-radius: $r-full;
+  transition: background-color $t-base $ease-out;
+
+  &--done { background: $success; }
+}
+
+.oitem__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.oitem__date {
+  font-size: 0.8rem;
+  color: $ink-faint;
+}
+
+.oitem__total {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: $ink;
+  font-variant-numeric: tabular-nums;
+}

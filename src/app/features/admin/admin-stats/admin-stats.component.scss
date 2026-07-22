@@ -1,0 +1,162 @@
+@use 'styles/tokens' as *;
+@use 'styles/admin' as *;
+
+.grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  margin-bottom: 20px;
+
+  @include up($bp-lg) { grid-template-columns: 1fr 1fr; }
+}
+
+.empty-note {
+  padding: 28px 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: $ink-soft;
+}
+
+/* ═══════════ Top 5 ═══════════ */
+.tops {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top__rank {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  background: $blue-light;
+  border-radius: $r-full;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: $blue-darker;
+}
+
+.top__emoji {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.top__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.top__name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $ink;
+  margin-bottom: 6px;
+}
+
+.top__bar {
+  height: 8px;
+  background: $line-soft;
+  border-radius: $r-full;
+  overflow: hidden;
+}
+
+.top__fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, $blue, $gold);
+  border-radius: $r-full;
+  transition: width $t-slow $ease-out;
+}
+
+.top__count {
+  flex-shrink: 0;
+  font-size: 0.81rem;
+  font-weight: 700;
+  color: $ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════ Graphique ═══════════ */
+.chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  height: 220px;
+  padding-top: 12px;
+}
+
+.chart__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  flex: 1;
+  height: 100%;
+}
+
+.chart__value {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: $ink;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__bar {
+  width: 100%;
+  max-width: 42px;
+  min-height: 4px;
+  background: linear-gradient(180deg, $blue, $blue-dark);
+  border-radius: $r-sm $r-sm 0 0;
+  transition: height $t-slow $ease-out;
+
+  /* Un jour sans commande garde une trace visible : une colonne vide serait
+     lue comme une donnée manquante plutôt que comme un zéro. */
+  &.is-zero {
+    background: $line;
+    height: 4px !important;
+  }
+}
+
+.chart__day {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: $ink-soft;
+  text-transform: uppercase;
+}
+
+/* ═══════════ Panier moyen ═══════════ */
+.avg {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.avg__label {
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: $ink-soft;
+}
+
+.avg__value {
+  font-family: $font-display;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: $gold-text;         /* 5.4:1 ✓ AA */
+  font-variant-numeric: tabular-nums;
+}

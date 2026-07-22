@@ -1,0 +1,299 @@
+<header class="head">
+  <div>
+    <h1 class="head__title">{{ 'admin.menu.title' | translate }}</h1>
+    <p class="head__subtitle">
+      {{ 'admin.menu.listCount' | translate: { count: menu.dishes().length } }}
+    </p>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- ═══════════ Formulaire ═══════════ -->
+  <section class="panel form-panel">
+    <h2 class="panel__title">
+      {{ (isEditing() ? 'admin.menu.editTitle' : 'admin.menu.addTitle') | translate }}
+    </h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <!-- Onglets de langue : le contenu du plat est bilingue, mais l'anglais
+           reste optionnel pour ne pas bloquer un ajout pendant le service. -->
+      <div class="langtabs" role="group" [attr.aria-label]="'nav.language' | translate">
+        <button
+          type="button"
+          class="langtabs__btn"
+          [class.is-active]="formLang() === 'fr'"
+          [attr.aria-pressed]="formLang() === 'fr'"
+          (click)="formLang.set('fr')"
+        >
+          {{ 'admin.menu.tabFr' | translate }}
+        </button>
+        <button
+          type="button"
+          class="langtabs__btn"
+          [class.is-active]="formLang() === 'en'"
+          [attr.aria-pressed]="formLang() === 'en'"
+          (click)="formLang.set('en')"
+        >
+          {{ 'admin.menu.tabEn' | translate }}
+        </button>
+      </div>
+
+      @if (formLang() === 'fr') {
+        <div class="field">
+          <label class="field__label" for="nameFr">
+            {{ 'admin.menu.name' | translate }}<span class="req" aria-hidden="true">*</span>
+          </label>
+          <input id="nameFr" type="text" class="field__control" formControlName="nameFr" required />
+          @if (form.controls.nameFr.touched && form.controls.nameFr.invalid) {
+            <p class="field__error">{{ 'admin.menu.errors.nameRequired' | translate }}</p>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="descFr">
+            {{ 'admin.menu.description' | translate }}<span class="req" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="descFr"
+            class="field__control"
+            formControlName="descriptionFr"
+            rows="3"
+            required
+          ></textarea>
+          @if (form.controls.descriptionFr.touched && form.controls.descriptionFr.invalid) {
+            <p class="field__error">{{ 'admin.menu.errors.descriptionRequired' | translate }}</p>
+          }
+        </div>
+      } @else {
+        <div class="field">
+          <label class="field__label" for="nameEn">{{ 'admin.menu.name' | translate }}</label>
+          <input id="nameEn" type="text" class="field__control" formControlName="nameEn" />
+          <p class="field__hint">{{ 'admin.menu.nameEnHint' | translate }}</p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="descEn">
+            {{ 'admin.menu.description' | translate }}
+          </label>
+          <textarea
+            id="descEn"
+            class="field__control"
+            formControlName="descriptionEn"
+            rows="3"
+          ></textarea>
+          <p class="field__hint">{{ 'admin.menu.nameEnHint' | translate }}</p>
+        </div>
+      }
+
+      <div class="form-row">
+        <div class="field">
+          <label class="field__label" for="price">
+            {{ 'admin.menu.price' | translate }}<span class="req" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="price"
+            type="number"
+            class="field__control"
+            formControlName="price"
+            min="0.01"
+            step="0.25"
+            required
+          />
+          @if (form.controls.price.touched && form.controls.price.invalid) {
+            <p class="field__error">{{ 'admin.menu.errors.priceMin' | translate }}</p>
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="category">{{ 'admin.menu.category' | translate }}</label>
+          <select id="category" class="field__control" formControlName="category">
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{ 'menu.categories.' + cat | translate }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="emoji">{{ 'admin.menu.emoji' | translate }}</label>
+        <input id="emoji" type="text" class="field__control emoji-input" formControlName="emoji" maxlength="4" />
+        <p class="field__hint">{{ 'admin.menu.emojiHint' | translate }}</p>
+      </div>
+
+      <!-- ---------- Photo ---------- -->
+      <div class="field">
+        <span class="field__label">{{ 'admin.menu.image' | translate }}</span>
+
+        @if (images.canUpload) {
+          <!-- Téléversement direct depuis l'ordinateur (Cloudinary ou Storage). -->
+          <label class="upload" [class.is-busy]="images.progress() !== null">
+            <input
+              type="file"
+              accept="image/*"
+              [disabled]="images.progress() !== null"
+              (change)="onFileSelected($event)"
+            />
+            <span>📷 {{ 'admin.menu.imageUpload' | translate }}</span>
+          </label>
+
+          @if (images.progress() !== null) {
+            <div class="upload-progress" role="status">
+              <div class="upload-progress__bar" [style.width.%]="images.progress()"></div>
+              <span class="upload-progress__label">
+                {{ 'admin.menu.imageUploading' | translate: { percent: images.progress() } }}
+              </span>
+            </div>
+          }
+
+          <!-- Alternative : coller une URL déjà hébergée, toujours possible. -->
+          <details class="url-alt">
+            <summary>{{ 'admin.menu.imageUrlAlt' | translate }}</summary>
+            <input
+              type="url"
+              class="field__control"
+              formControlName="imageUrl"
+              placeholder="https://…"
+            />
+          </details>
+        } @else {
+          <!-- Mode URL : le restaurateur colle un lien d'image. -->
+          <input
+            type="url"
+            class="field__control"
+            formControlName="imageUrl"
+            placeholder="https://res.cloudinary.com/…"
+          />
+          <p class="field__hint">{{ 'admin.menu.imageUrlHint' | translate }}</p>
+        }
+
+        @if (previewUrl()) {
+          <div class="preview">
+            <img [src]="previewUrl()" [alt]="'admin.menu.imagePreview' | translate" />
+            <button
+              type="button"
+              class="preview__remove"
+              (click)="form.controls.imageUrl.setValue('')"
+            >
+              {{ 'admin.menu.imageRemove' | translate }}
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- ---------- Options ---------- -->
+      <div class="checks">
+        <label class="check">
+          <input type="checkbox" formControlName="isPopular" />
+          <span>★ {{ 'admin.menu.popular' | translate }}</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" formControlName="isVegetarian" />
+          <span>🌱 {{ 'admin.menu.vegetarian' | translate }}</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" formControlName="isSpicy" />
+          <span>🌶️ {{ 'admin.menu.spicy' | translate }}</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" formControlName="isAvailable" />
+          <span>✓ {{ 'admin.menu.available' | translate }}</span>
+        </label>
+      </div>
+
+      <!-- ---------- Allergènes ---------- -->
+      <fieldset class="allergens">
+        <legend class="field__label">{{ 'admin.menu.allergens' | translate }}</legend>
+        <div class="allergens__list">
+          @for (a of allergens; track a) {
+            <label class="chip" [class.is-on]="hasAllergen(a)">
+              <input type="checkbox" [checked]="hasAllergen(a)" (change)="toggleAllergen(a)" />
+              <span>{{ 'allergens.' + a | translate }}</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          {{
+            (saving()
+              ? 'common.saving'
+              : isEditing()
+                ? 'admin.menu.update'
+                : 'admin.menu.add'
+            ) | translate
+          }}
+        </button>
+
+        @if (isEditing()) {
+          <button type="button" class="btn btn--ghost" (click)="cancelEdit()">
+            {{ 'admin.menu.cancelEdit' | translate }}
+          </button>
+        }
+      </div>
+    </form>
+  </section>
+
+  <!-- ═══════════ Liste des plats ═══════════ -->
+  <section class="panel">
+    <h2 class="panel__title">{{ 'admin.menu.listTitle' | translate }}</h2>
+
+    @if (menu.loading()) {
+      <app-skeleton variant="row" [count]="4" [label]="'common.loading' | translate" />
+    } @else if (menu.dishes().length === 0) {
+      <p class="list-empty">{{ 'admin.menu.empty.text' | translate }}</p>
+    } @else {
+      <ul class="dishes">
+        @for (dish of menu.dishes(); track dish.id) {
+          <li class="dishrow" [class.dishrow--off]="!dish.isAvailable">
+            <div class="dishrow__thumb" aria-hidden="true">
+              @if (dish.imageUrl) {
+                <img [src]="dish.imageUrl" alt="" loading="lazy" />
+              } @else {
+                <span>{{ dish.emoji }}</span>
+              }
+            </div>
+
+            <div class="dishrow__body">
+              <p class="dishrow__name">
+                {{ dish.name | localized }}
+                @if (dish.isPopular) {
+                  <span class="dishrow__star" aria-hidden="true">★</span>
+                }
+              </p>
+              <p class="dishrow__meta">
+                {{ 'menu.categories.' + dish.category | translate }} ·
+                {{ dish.price | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+              </p>
+            </div>
+
+            <div class="dishrow__actions">
+              <!-- Interrupteur de disponibilité : le geste le plus fréquent en
+                   plein service, il doit rester à un seul clic. -->
+              <button
+                type="button"
+                class="toggle"
+                [class.is-on]="dish.isAvailable"
+                (click)="toggleAvailability(dish)"
+                [attr.aria-pressed]="dish.isAvailable"
+                [attr.aria-label]="
+                  (dish.isAvailable ? 'admin.menu.available' : 'admin.menu.unavailable') | translate
+                "
+              >
+                <span class="toggle__knob"></span>
+              </button>
+
+              <button type="button" class="linkbtn" (click)="startEdit(dish)">
+                {{ 'common.edit' | translate }}
+              </button>
+
+              <button type="button" class="linkbtn linkbtn--danger" (click)="remove(dish)">
+                {{ 'common.delete' | translate }}
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</div>

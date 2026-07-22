@@ -1,0 +1,27 @@
+<!-- `aria-live="polite"` fait annoncer chaque notification par les lecteurs
+     d'écran sans interrompre la lecture en cours. La région doit exister dans
+     le DOM en permanence, même vide, sinon les ajouts ne sont pas détectés. -->
+<div class="toasts" role="status" aria-live="polite" aria-atomic="false">
+  @for (toast of toasts.toasts(); track toast.id) {
+    <div class="toast" [class]="'toast--' + toast.kind">
+      <span class="toast__icon" aria-hidden="true">
+        @switch (toast.kind) {
+          @case ('success') { ✓ }
+          @case ('error') { ! }
+          @default { i }
+        }
+      </span>
+
+      <span class="toast__text">{{ toast.key | translate: toast.params }}</span>
+
+      <button
+        type="button"
+        class="toast__close"
+        (click)="toasts.dismiss(toast.id)"
+        [attr.aria-label]="'toast.dismiss' | translate"
+      >
+        ×
+      </button>
+    </div>
+  }
+</div>

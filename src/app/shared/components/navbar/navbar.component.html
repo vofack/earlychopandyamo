@@ -1,0 +1,134 @@
+<header class="nav" [class.nav--scrolled]="scrolled()">
+  <div class="nav__inner container">
+    <a class="brand" routerLink="/" (click)="ui.closeMobileNav()">
+      <span class="brand__mark" aria-hidden="true">🍽️</span>
+      <span class="brand__text">
+        <span class="brand__name">{{ 'nav.brand' | translate }}</span>
+        <span class="brand__tagline">{{ 'nav.tagline' | translate }}</span>
+      </span>
+    </a>
+
+    <nav class="nav__links" [attr.aria-label]="'nav.brand' | translate">
+      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+        {{ 'nav.home' | translate }}
+      </a>
+      <a routerLink="/menu" routerLinkActive="is-active">{{ 'nav.menu' | translate }}</a>
+    </nav>
+
+    <div class="nav__actions">
+      <!-- Le sélecteur de langue affiche la langue vers laquelle on bascule,
+           libellée dans cette langue — un anglophone perdu sur la version
+           française reconnaît « English » même sans lire le reste. -->
+      <button
+        type="button"
+        class="lang-btn"
+        (click)="toggleLanguage()"
+        [attr.aria-label]="'nav.switchToEnglish' | translate"
+      >
+        <span class="lang-btn__code">{{ language.current() === 'fr' ? 'EN' : 'FR' }}</span>
+      </button>
+
+      <!-- Compte client. Connecté → lien vers l'espace compte (avatar Google
+           ou initiale) ; sinon → connexion Google. L'admin conserve sa propre
+           entrée (lien admin dans le menu mobile / pied de page). -->
+      @if (auth.isLoggedIn()) {
+        <a
+          class="account-btn"
+          routerLink="/compte"
+          [attr.aria-label]="'account.myAccount' | translate"
+        >
+          @if (account.profile()?.photoURL) {
+            <img
+              class="account-btn__avatar"
+              [src]="account.profile()!.photoURL"
+              alt=""
+              referrerpolicy="no-referrer"
+            />
+          } @else {
+            <span class="account-btn__initial" aria-hidden="true">
+              {{ (account.profile()?.displayName || 'C').charAt(0) }}
+            </span>
+          }
+        </a>
+      } @else {
+        <button
+          type="button"
+          class="login-btn"
+          (click)="signInWithGoogle()"
+          [disabled]="signingIn()"
+        >
+          <svg class="login-btn__g" viewBox="0 0 18 18" aria-hidden="true">
+            <path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.8H9v3.5h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.6z"/>
+            <path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H.9v2.3A9 9 0 0 0 9 18z"/>
+            <path fill="#FBBC05" d="M3.9 10.7a5.4 5.4 0 0 1 0-3.4V5H.9a9 9 0 0 0 0 8l3-2.3z"/>
+            <path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.3l2.6-2.6A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6z"/>
+          </svg>
+          <span class="login-btn__label">{{ 'account.signIn' | translate }}</span>
+        </button>
+      }
+
+      <button
+        type="button"
+        class="cart-btn"
+        (click)="ui.openCart()"
+        [attr.aria-label]="'nav.openCart' | translate"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="cart-btn__icon">
+          <path
+            d="M6 6h15l-1.6 8.2a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.65L5.2 3.5H2.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle cx="9.5" cy="20" r="1.4" fill="currentColor" />
+          <circle cx="17.5" cy="20" r="1.4" fill="currentColor" />
+        </svg>
+
+        @if (cart.count() > 0) {
+          <span class="cart-btn__badge" aria-hidden="true">{{ cart.count() }}</span>
+        }
+
+        <!-- Le badge chiffré est décoratif ; le compte réel est annoncé ici
+             pour les lecteurs d'écran, dans une région live. -->
+        <span class="sr-only" aria-live="polite">
+          {{ 'nav.itemsInCart' | translate: { count: cart.count() } }}
+        </span>
+      </button>
+
+      <button
+        type="button"
+        class="burger"
+        (click)="ui.toggleMobileNav()"
+        [attr.aria-expanded]="ui.mobileNavOpen()"
+        aria-controls="mobile-nav"
+        [attr.aria-label]="(ui.mobileNavOpen() ? 'nav.closeMenu' : 'nav.openMenu') | translate"
+      >
+        <span class="burger__bar" [class.is-open]="ui.mobileNavOpen()"></span>
+      </button>
+    </div>
+  </div>
+
+  @if (ui.mobileNavOpen()) {
+    <div id="mobile-nav" class="mobile-nav">
+      <a routerLink="/" (click)="ui.closeMobileNav()">{{ 'nav.home' | translate }}</a>
+      <a routerLink="/menu" (click)="ui.closeMobileNav()">{{ 'nav.menu' | translate }}</a>
+
+      <!-- Connecté : accès direct au compte. La connexion elle-même se fait
+           via le bouton de la barre (visible aussi sur mobile). -->
+      @if (auth.isLoggedIn()) {
+        <a routerLink="/compte" (click)="ui.closeMobileNav()">{{ 'account.myAccount' | translate }}</a>
+      }
+
+      <!-- Sélecteur de langue, déplacé ici sur mobile (masqué dans la barre). -->
+      <button type="button" class="mobile-nav__lang" (click)="toggleLanguage()">
+        {{ language.current() === 'fr' ? 'English' : 'Français' }}
+      </button>
+
+      <a routerLink="/admin/login" (click)="ui.closeMobileNav()" class="mobile-nav__admin">
+        {{ 'footer.adminLink' | translate }}
+      </a>
+    </div>
+  }
+</header>

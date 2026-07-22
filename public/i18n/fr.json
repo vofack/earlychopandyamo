@@ -1,0 +1,503 @@
+{
+  "common": {
+    "loading": "Chargement…",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "back": "Retour",
+    "close": "Fermer",
+    "retry": "Réessayer",
+    "error": "Une erreur est survenue",
+    "errorNetwork": "Connexion impossible. Vérifiez votre réseau et réessayez.",
+    "required": "obligatoire",
+    "optional": "facultatif"
+  },
+
+  "nav": {
+    "brand": "EarlyChop & Yamo",
+    "tagline": "Cuisine africaine authentique",
+    "home": "Accueil",
+    "menu": "Menu",
+    "cart": "Panier",
+    "admin": "Admin",
+    "skipToContent": "Passer au contenu principal",
+    "openMenu": "Ouvrir le menu de navigation",
+    "closeMenu": "Fermer le menu de navigation",
+    "openCart": "Ouvrir le panier",
+    "language": "Langue",
+    "switchToEnglish": "Switch to English",
+    "itemsInCart": "{{count}} article(s) dans le panier"
+  },
+
+  "home": {
+    "badge": "Livraison 100% GRATUITE",
+    "title": "Saveurs d'Afrique livrées chez vous",
+    "subtitle": "Des plats faits maison, préparés le jour même avec des ingrédients frais, et livrés gratuitement partout à Montérégie.",
+    "cta": "Voir notre menu",
+    "ctaSecondary": "Nous contacter",
+    "pills": {
+      "delivery": "Livraison gratuite",
+      "time": "30-45 min",
+      "fresh": "100% frais",
+      "homemade": "Fait maison"
+    },
+    "closed": {
+      "title": "Nous sommes fermés pour le moment",
+      "reopens": "Nous ouvrons {{time}}",
+      "text": "Vous pouvez consulter le menu, mais les commandes reprendront à notre réouverture."
+    },
+    "why": {
+      "title": "Pourquoi nous choisir",
+      "subtitle": "Ce qui fait la différence à chaque commande",
+      "item1": { "title": "Livraison 100% gratuite", "text": "Aucuns frais de livraison, jamais. Le prix affiché est le prix payé." },
+      "item2": { "title": "Cuisine authentique", "text": "Des recettes traditionnelles transmises en famille, préparées sans raccourcis." },
+      "item3": { "title": "Ingrédients frais", "text": "Nous achetons chaque matin. Rien n'est congelé, rien n'est réchauffé." },
+      "item4": { "title": "Livré en 30-45 min", "text": "Votre repas part dès qu'il est prêt, encore chaud." },
+      "item5": { "title": "Paiement flexible", "text": "Comptant ou Interac — vous choisissez à la livraison." },
+      "item6": { "title": "Suivi en direct", "text": "Un lien de suivi vous montre l'avancement de votre commande en temps réel." }
+    },
+    "reviews": {
+      "title": "Ce que disent nos clients",
+      "subtitle": "Des centaines de repas livrés à Montréal",
+      "r1": { "text": "Le meilleur poulet DG que j'ai mangé depuis mon arrivée au Québec. On sent la cuisine de maison.", "author": "Aminata D.", "city": "Villeray" },
+      "r2": { "text": "Commandé à 18h, livré à 18h35, encore brûlant. Et la livraison est vraiment gratuite.", "author": "Marc-Olivier T.", "city": "Rosemont" },
+      "r3": { "text": "Les portions sont généreuses et les épices parfaitement dosées. Devenu notre vendredi soir.", "author": "Sarah B.", "city": "Le Plateau" }
+    }
+  },
+
+  "menu": {
+    "title": "Notre menu",
+    "subtitle": "Tout est préparé le jour même. Livraison gratuite, sans minimum.",
+    "searchLabel": "Rechercher un plat",
+    "searchPlaceholder": "Rechercher un plat, un ingrédient…",
+    "clearSearch": "Effacer la recherche",
+    "categories": {
+      "all": "Tous",
+      "main": "Plat principal",
+      "starter": "Entrée",
+      "dessert": "Dessert",
+      "drink": "Boisson"
+    },
+    "filters": {
+      "label": "Filtres alimentaires",
+      "vegetarian": "Végétarien",
+      "spicy": "Épicé",
+      "noPeanut": "Sans arachide",
+      "clear": "Réinitialiser les filtres"
+    },
+    "resultCount": "{{count}} plat(s)",
+    "popular": "Populaire",
+    "unavailable": "Épuisé",
+    "vegetarian": "Végétarien",
+    "spicy": "Épicé",
+    "add": "Ajouter {{name}} au panier",
+    "increase": "Ajouter un {{name}}",
+    "decrease": "Retirer un {{name}}",
+    "inCart": "{{count}} dans le panier",
+    "allergensLabel": "Contient",
+    "empty": {
+      "title": "Aucun plat ne correspond",
+      "text": "Essayez un autre mot-clé ou retirez quelques filtres.",
+      "cta": "Réinitialiser"
+    },
+    "noDishes": {
+      "title": "Le menu arrive bientôt",
+      "text": "Aucun plat n'est encore publié. Revenez d'ici peu !"
+    },
+    "loadError": {
+      "title": "Menu indisponible",
+      "text": "Impossible de charger les plats pour l'instant."
+    }
+  },
+
+  "cart": {
+    "title": "Votre panier",
+    "empty": {
+      "title": "Votre panier est vide",
+      "text": "Parcourez le menu et ajoutez vos plats préférés.",
+      "cta": "Voir le menu"
+    },
+    "remove": "Retirer {{name}} du panier",
+    "quantityFor": "Quantité pour {{name}}",
+    "subtotal": "Sous-total",
+    "delivery": "Livraison",
+    "free": "GRATUITE",
+    "total": "Total",
+    "checkout": "Commander maintenant",
+    "minOrder": "Commande minimum de {{amount}}. Il vous manque {{missing}}.",
+    "closed": "Commandes fermées pour le moment",
+    "viewCart": "Voir le panier",
+    "itemCount": "{{count}} article(s)"
+  },
+
+  "checkout": {
+    "title": "Finaliser la commande",
+    "subtitle": "Plus qu'une étape avant de passer à table.",
+    "sectionContact": "Vos coordonnées",
+    "sectionDelivery": "Livraison",
+    "sectionPayment": "Paiement",
+    "form": {
+      "name": "Nom complet",
+      "namePlaceholder": "Aminata Diallo",
+      "email": "Courriel",
+      "emailPlaceholder": "vous@exemple.com",
+      "emailHint": "Nous y envoyons votre confirmation et votre lien de suivi.",
+      "phone": "Téléphone",
+      "phonePlaceholder": "(438) 404-2421",
+      "phoneHint": "Le livreur vous appelle à l'arrivée.",
+      "address": "Adresse de livraison",
+      "addressPlaceholder": "1234 rue Saint-Denis, app. 3, Montréal",
+      "postalCode": "Code postal",
+      "postalCodePlaceholder": "H2X 1K5",
+      "payment": "Mode de paiement",
+      "paymentHint": "Le paiement se fait à la livraison.",
+      "notes": "Instructions spéciales",
+      "notesPlaceholder": "Code d'entrée, allergies, préférences de cuisson…"
+    },
+    "payment": {
+      "cash": "Comptant",
+      "interac": "Interac"
+    },
+    "errors": {
+      "nameRequired": "Veuillez indiquer votre nom.",
+      "nameMin": "Le nom doit contenir au moins 2 caractères.",
+      "emailRequired": "Veuillez indiquer votre courriel.",
+      "emailInvalid": "Ce courriel semble incorrect.",
+      "phoneRequired": "Veuillez indiquer votre téléphone.",
+      "phoneInvalid": "Numéro québécois attendu, ex. (438) 404-2421.",
+      "addressRequired": "Veuillez indiquer votre adresse de livraison.",
+      "addressMin": "L'adresse semble trop courte.",
+      "postalRequired": "Veuillez indiquer votre code postal.",
+      "postalInvalid": "Format attendu : H2X 1K5.",
+      "postalOutOfZone": "Nous ne livrons pas encore à ce code postal.",
+      "paymentRequired": "Veuillez choisir un mode de paiement.",
+      "summary": "Veuillez corriger les champs indiqués ci-dessous."
+    },
+    "summary": {
+      "title": "Récapitulatif",
+      "items": "Articles",
+      "edit": "Modifier le panier"
+    },
+    "submit": "Confirmer ma commande",
+    "submitting": "Envoi en cours…",
+    "emptyCart": {
+      "title": "Votre panier est vide",
+      "text": "Ajoutez au moins un plat avant de commander.",
+      "cta": "Voir le menu"
+    },
+    "closed": {
+      "title": "Nous n'acceptons pas de commande pour l'instant",
+      "text": "Le restaurant est fermé. Revenez à notre réouverture pour finaliser votre panier — il sera conservé.",
+      "reopens": "Réouverture {{time}}"
+    },
+    "failed": {
+      "title": "L'envoi a échoué",
+      "text": "Votre commande n'a pas pu être enregistrée. Vérifiez votre connexion et réessayez — rien n'a été facturé."
+    },
+    "loyalty": {
+      "welcomeApplied": "Avantage de bienvenue : {{amount}} $ offerts sur cette commande.",
+      "welcomeLabel": "Bienvenue",
+      "useFreeMeal": "Utiliser mon repas gratuit",
+      "freeMealHint": "Applique {{amount}} $ de réduction et utilise un repas gratuit.",
+      "freeMealLabel": "Repas gratuit",
+      "discounts": "Réductions"
+    }
+  },
+
+  "success": {
+    "title": "Commande confirmée !",
+    "text": "Merci {{name}}, nous préparons votre repas.",
+    "orderNumber": "Numéro de commande",
+    "estimate": "Livraison estimée dans {{time}} minutes",
+    "emailSent": "Une confirmation vient de partir vers {{email}}. Vérifiez également vos spams.",
+    "emailFailed": "Votre commande est bien enregistrée, mais le courriel de confirmation n'a pas pu partir. Notez votre numéro de commande.",
+    "track": "Suivre ma commande",
+    "whatsapp": "Nous écrire sur WhatsApp",
+    "home": "Retour à l'accueil"
+  },
+
+  "tracking": {
+    "title": "Suivi de commande",
+    "orderNumber": "Commande n° {{id}}",
+    "placedAt": "Passée le {{date}}",
+    "estimate": "Livraison estimée dans {{time}} minutes",
+    "steps": {
+      "new": "Commande reçue",
+      "confirmed": "Confirmée par le restaurant",
+      "preparing": "En préparation",
+      "delivered": "Livrée"
+    },
+    "stepsHint": {
+      "new": "Nous avons bien reçu votre commande.",
+      "confirmed": "Le restaurant a confirmé votre commande.",
+      "preparing": "Votre repas est en cuisine.",
+      "delivered": "Bon appétit !"
+    },
+    "deliveryTo": "Livraison à",
+    "yourOrder": "Votre commande",
+    "total": "Total",
+    "notFound": {
+      "title": "Commande introuvable",
+      "text": "Ce lien de suivi n'est pas valide. Vérifiez le lien reçu par courriel.",
+      "cta": "Retour à l'accueil"
+    },
+    "help": "Une question ? Écrivez-nous sur WhatsApp."
+  },
+
+  "account": {
+    "title": "Mon compte",
+    "signIn": "Se connecter",
+    "myAccount": "Mon compte",
+    "signOut": "Déconnexion",
+    "errors": {
+      "notEnabled": "La connexion Google n'est pas encore activée. (Console Firebase → Authentication → Google)",
+      "unauthorizedDomain": "Ce domaine n'est pas autorisé pour la connexion. (Authentication → Settings → Domaines autorisés)",
+      "popupBlocked": "La fenêtre de connexion a été bloquée. Autorisez les pop-ups pour ce site puis réessayez."
+    },
+    "loyalty": {
+      "title": "Ma fidélité",
+      "points": "points",
+      "freeMeals": "{{count}} repas gratuit(s) disponible(s)",
+      "toNext": "Plus que {{count}} point(s) avant votre prochain repas gratuit"
+    },
+    "orders": {
+      "title": "Mes commandes",
+      "empty": "Vous n'avez pas encore de commande."
+    }
+  },
+
+  "referral": {
+    "title": "Parrainez vos amis",
+    "intro": "Partagez votre code : votre ami reçoit {{perk}} $ sur sa 1re commande, et vous gagnez un point à chaque filleul livré. {{threshold}} points = un repas gratuit !",
+    "yourCode": "Votre code",
+    "share": "Partager mon lien",
+    "copyLink": "Copier le lien",
+    "copied": "Lien copié !"
+  },
+
+  "footer": {
+    "tagline": "Cuisine africaine authentique, livrée gratuitement à Montréal.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "hours": "Heures d'ouverture",
+    "openNow": "Ouvert maintenant",
+    "closedNow": "Fermé",
+    "closedDay": "Fermé",
+    "rights": "Tous droits réservés.",
+    "adminLink": "Espace restaurant"
+  },
+
+  "days": {
+    "0": "Dimanche",
+    "1": "Lundi",
+    "2": "Mardi",
+    "3": "Mercredi",
+    "4": "Jeudi",
+    "5": "Vendredi",
+    "6": "Samedi"
+  },
+
+  "allergens": {
+    "peanut": "Arachide",
+    "gluten": "Gluten",
+    "dairy": "Produits laitiers",
+    "egg": "Œuf",
+    "fish": "Poisson",
+    "shellfish": "Crustacés",
+    "soy": "Soya",
+    "nuts": "Fruits à coque"
+  },
+
+  "status": {
+    "new": "Nouvelle",
+    "confirmed": "Confirmée",
+    "preparing": "En préparation",
+    "delivered": "Livrée"
+  },
+
+  "admin": {
+    "login": {
+      "title": "Espace restaurant",
+      "subtitle": "Connectez-vous pour gérer les commandes et le menu.",
+      "email": "Courriel",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "submitting": "Connexion…",
+      "errorRequired": "Courriel et mot de passe sont requis.",
+      "errorInvalid": "Courriel ou mot de passe incorrect.",
+      "errorTooMany": "Trop de tentatives. Réessayez dans quelques minutes.",
+      "backToSite": "Retour au site",
+      "forgot": "Mot de passe oublié ?",
+      "resetSending": "Envoi…",
+      "resetSent": "Si ce compte existe, un courriel de réinitialisation vient d'être envoyé. Vérifiez aussi vos indésirables.",
+      "resetNeedEmail": "Entrez d'abord votre courriel ci-dessus."
+    },
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "orders": "Commandes",
+      "menu": "Menu",
+      "customers": "Clients",
+      "settings": "Paramètres",
+      "stats": "Statistiques",
+      "logout": "Déconnexion",
+      "viewSite": "Voir le site"
+    },
+    "customers": {
+      "title": "Clients",
+      "count": "{{count}} compte(s) client(s)",
+      "search": "Rechercher un client, un courriel, un code…",
+      "customer": "Client",
+      "code": "Code",
+      "referredBy": "Parrainé par",
+      "orders": "Commandes",
+      "spent": "Dépensé",
+      "points": "Points",
+      "freeMeals": "Repas gratuits",
+      "adjust": "Ajuster",
+      "custom": "Autre…",
+      "adjustPrompt": "Ajuster les points de {{name}} (nombre, négatif pour retirer) :",
+      "empty": { "title": "Aucun client", "text": "Les comptes clients apparaîtront ici dès les premières inscriptions." }
+    },
+    "dashboard": {
+      "title": "Tableau de bord",
+      "welcome": "Bonjour, voici l'activité du restaurant.",
+      "totalOrders": "Commandes totales",
+      "revenue": "Chiffre d'affaires",
+      "dishes": "Plats au menu",
+      "average": "Panier moyen",
+      "newOrders": "{{count}} nouvelle(s) commande(s)"
+    },
+    "orders": {
+      "title": "Commandes",
+      "live": "Mise à jour en direct",
+      "newCount": "{{count}} nouvelle(s)",
+      "filterAll": "Toutes",
+      "empty": { "title": "Aucune commande", "text": "Les nouvelles commandes apparaîtront ici automatiquement." },
+      "emptyFiltered": { "title": "Aucune commande dans ce statut", "text": "Changez de filtre pour voir les autres commandes." },
+      "client": "Client",
+      "contact": "Contact",
+      "address": "Adresse",
+      "items": "Plats commandés",
+      "payment": "Paiement",
+      "notes": "Instructions",
+      "total": "Total",
+      "placedAt": "Reçue",
+      "actions": {
+        "confirm": "Confirmer",
+        "prepare": "En préparation",
+        "deliver": "Marquer livrée",
+        "delete": "Supprimer",
+        "call": "Appeler",
+        "expand": "Voir le détail",
+        "collapse": "Masquer le détail"
+      },
+      "deleteConfirm": "Supprimer définitivement la commande n° {{id}} ? Cette action est irréversible."
+    },
+    "menu": {
+      "title": "Gestion du menu",
+      "addTitle": "Ajouter un plat",
+      "editTitle": "Modifier le plat",
+      "listTitle": "Plats existants",
+      "listCount": "{{count}} plat(s)",
+      "tabFr": "Français",
+      "tabEn": "English",
+      "name": "Nom du plat",
+      "nameEnHint": "Laissez vide pour réutiliser le français.",
+      "description": "Description",
+      "price": "Prix ($)",
+      "category": "Catégorie",
+      "emoji": "Emoji",
+      "emojiHint": "Affiché si aucune photo n'est fournie.",
+      "image": "Photo du plat",
+      "imageUrl": "URL de l'image",
+      "imageUrlHint": "Téléversez sur cloudinary.com (gratuit) puis collez le lien ici.",
+      "imageUrlAlt": "Ou coller une URL d'image",
+      "imageUpload": "Choisir une photo",
+      "imageUploadFailed": "Le téléversement a échoué. Réessayez ou collez une URL.",
+      "imageUploading": "Téléversement… {{percent}}%",
+      "imageRemove": "Retirer la photo",
+      "imagePreview": "Aperçu",
+      "imageInvalid": "Cette URL ne pointe pas vers une image valide.",
+      "popular": "Marquer comme populaire",
+      "vegetarian": "Végétarien",
+      "spicy": "Épicé",
+      "allergens": "Allergènes",
+      "available": "Disponible",
+      "unavailable": "Indisponible",
+      "add": "Ajouter le plat",
+      "update": "Enregistrer les modifications",
+      "cancelEdit": "Annuler la modification",
+      "deleteConfirm": "Supprimer « {{name}} » du menu ? Cette action est irréversible.",
+      "empty": { "title": "Aucun plat", "text": "Ajoutez votre premier plat avec le formulaire ci-contre." },
+      "errors": {
+        "nameRequired": "Le nom en français est obligatoire.",
+        "descriptionRequired": "La description en français est obligatoire.",
+        "priceRequired": "Le prix est obligatoire.",
+        "priceMin": "Le prix doit être supérieur à 0."
+      }
+    },
+    "settings": {
+      "title": "Paramètres du restaurant",
+      "subtitle": "Ces réglages s'appliquent immédiatement sur le site public.",
+      "isOpen": "Accepter les commandes",
+      "isOpenHint": "Décochez pour suspendre les commandes, même pendant les heures d'ouverture.",
+      "deliveryFee": "Frais de livraison ($)",
+      "deliveryFeeHint": "0 = livraison gratuite.",
+      "minOrder": "Commande minimum ($)",
+      "minOrderHint": "0 = aucun minimum.",
+      "hours": "Heures d'ouverture",
+      "closedDay": "Fermé ce jour",
+      "openAt": "Ouverture",
+      "closeAt": "Fermeture",
+      "zone": "Zone de livraison",
+      "zoneHint": "Préfixes de codes postaux desservis, séparés par une virgule (ex. H2X, H2J, H3B). Laissez vide pour livrer partout.",
+      "saved": "Paramètres enregistrés.",
+      "referral": {
+        "title": "Parrainage & fidélité",
+        "enabled": "Activer le programme de parrainage",
+        "enabledHint": "Décochez pour masquer le parrainage et les repas gratuits partout sur le site.",
+        "pointsPerReferral": "Points par filleul",
+        "pointsForFreeMeal": "Points pour un repas gratuit",
+        "pointsForFreeMealHint": "Nombre de parrainages réussis pour débloquer un repas gratuit.",
+        "freeMealCredit": "Valeur du repas gratuit ($)",
+        "welcomePerkAmount": "Réduction filleul, 1re commande ($)",
+        "welcomePerkHint": "Réduction offerte au nouveau client venu par un lien de parrainage.",
+        "emailOnStatus": "Courriel à chaque changement de statut",
+        "emailOnStatusHint": "Prévient le client par courriel quand la commande avance (attention au quota ~100/jour)."
+      }
+    },
+    "stats": {
+      "title": "Statistiques",
+      "revenueTotal": "Chiffre d'affaires total",
+      "revenueMonth": "Chiffre d'affaires du mois",
+      "ordersTotal": "Commandes totales",
+      "ordersMonth": "Commandes du mois",
+      "average": "Panier moyen",
+      "topDishes": "Top 5 des plats",
+      "topDishesEmpty": "Pas encore assez de commandes pour établir un classement.",
+      "ordersSold": "{{count}} vendu(s)",
+      "last7Days": "Commandes des 7 derniers jours",
+      "noData": "Aucune donnée pour cette période.",
+      "chartLabel": "{{count}} commande(s) le {{date}}"
+    }
+  },
+
+  "toast": {
+    "addedToCart": "{{name}} ajouté au panier",
+    "removedFromCart": "{{name}} retiré du panier",
+    "orderConfirmed": "Commande confirmée",
+    "statusUpdated": "Statut mis à jour",
+    "orderDeleted": "Commande supprimée",
+    "dishAdded": "Plat ajouté au menu",
+    "dishUpdated": "Plat mis à jour",
+    "dishDeleted": "Plat supprimé",
+    "settingsSaved": "Paramètres enregistrés",
+    "loggedOut": "Vous êtes déconnecté",
+    "dismiss": "Fermer la notification"
+  }
+}

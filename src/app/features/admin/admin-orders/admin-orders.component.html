@@ -1,0 +1,166 @@
+<header class="head">
+  <div>
+    <h1 class="head__title">{{ 'admin.orders.title' | translate }}</h1>
+    <p class="head__subtitle">
+      <span class="live-dot" aria-hidden="true"></span>
+      {{ 'admin.orders.live' | translate }}
+    </p>
+  </div>
+
+  @if (orders.newCount() > 0) {
+    <span class="head__alert" role="status">
+      {{ 'admin.orders.newCount' | translate: { count: orders.newCount() } }}
+    </span>
+  }
+</header>
+
+<!-- ═══════════ Filtres de statut ═══════════ -->
+<div class="filters" role="group" [attr.aria-label]="'admin.orders.title' | translate">
+  @for (filter of filters; track filter) {
+    <button
+      type="button"
+      class="filters__btn"
+      [class.is-active]="activeFilter() === filter"
+      [attr.aria-pressed]="activeFilter() === filter"
+      (click)="activeFilter.set(filter)"
+    >
+      {{ (filter === 'all' ? 'admin.orders.filterAll' : 'status.' + filter) | translate }}
+    </button>
+  }
+</div>
+
+<!-- ═══════════ Liste ═══════════ -->
+@if (orders.loading()) {
+  <app-skeleton variant="row" [count]="4" [label]="'common.loading' | translate" />
+} @else if (orders.orders().length === 0) {
+  <app-empty-state icon="🧾" titleKey="admin.orders.empty.title" textKey="admin.orders.empty.text" />
+} @else if (filtered().length === 0) {
+  <app-empty-state
+    icon="🔍"
+    titleKey="admin.orders.emptyFiltered.title"
+    textKey="admin.orders.emptyFiltered.text"
+  />
+} @else {
+  <ul class="orders">
+    @for (order of filtered(); track order.id) {
+      <li class="order" [class.order--new]="order.status === 'new'">
+        <!-- ---------- Ligne principale ---------- -->
+        <div class="order__row">
+          <div class="order__ident">
+            <span class="order__id">#{{ shortId(order.id) }}</span>
+            <span class="badge" [class]="'badge--' + order.status">
+              {{ 'status.' + order.status | translate }}
+            </span>
+          </div>
+
+          <div class="order__client">
+            <p class="order__name">{{ order.clientName }}</p>
+            @if (order.createdAt) {
+              <p class="order__when">
+                {{ 'admin.orders.placedAt' | translate }} :
+                {{ order.createdAt.toDate() | date: 'short' : undefined : language.locale() }}
+              </p>
+            }
+          </div>
+
+          <p class="order__total">
+            {{ order.total | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+          </p>
+
+          <div class="order__actions">
+            @if (nextStatus(order); as next) {
+              <button type="button" class="btn btn--primary btn--sm" (click)="advance(order)">
+                {{ actionKey(next) | translate }}
+              </button>
+            }
+
+            <button
+              type="button"
+              class="order__toggle"
+              (click)="toggleExpanded(order.id)"
+              [attr.aria-expanded]="isExpanded(order.id)"
+              [attr.aria-controls]="'detail-' + order.id"
+            >
+              {{
+                (isExpanded(order.id)
+                  ? 'admin.orders.actions.collapse'
+                  : 'admin.orders.actions.expand'
+                ) | translate
+              }}
+            </button>
+          </div>
+        </div>
+
+        <!-- ---------- Détail ---------- -->
+        @if (isExpanded(order.id)) {
+          <div class="detail" [id]="'detail-' + order.id">
+            <div class="detail__grid">
+              <section class="detail__block">
+                <h3 class="detail__label">{{ 'admin.orders.contact' | translate }}</h3>
+                <p>
+                  <a [href]="'tel:' + order.phone">{{ order.phone }}</a>
+                </p>
+                <p>
+                  <a [href]="'mailto:' + order.email">{{ order.email }}</a>
+                </p>
+              </section>
+
+              <section class="detail__block">
+                <h3 class="detail__label">{{ 'admin.orders.address' | translate }}</h3>
+                <p>{{ order.address }}</p>
+                <p>{{ order.postalCode }}</p>
+              </section>
+
+              <section class="detail__block">
+                <h3 class="detail__label">{{ 'admin.orders.payment' | translate }}</h3>
+                <p>{{ 'checkout.payment.' + order.paymentMethod | translate }}</p>
+              </section>
+
+              @if (order.notes) {
+                <section class="detail__block detail__block--wide">
+                  <h3 class="detail__label">{{ 'admin.orders.notes' | translate }}</h3>
+                  <p class="detail__notes">{{ order.notes }}</p>
+                </section>
+              }
+            </div>
+
+            <section class="detail__items">
+              <h3 class="detail__label">{{ 'admin.orders.items' | translate }}</h3>
+              <ul>
+                @for (item of order.items; track item.dishId) {
+                  <li>
+                    <span class="detail__qty">{{ item.quantity }}×</span>
+                    <span class="detail__name">{{ item.name | localized }}</span>
+
+                    <!-- Les allergènes remontent jusqu'en cuisine : c'est une
+                         information de sécurité, pas un détail de confort. -->
+                    @if (item.allergens?.length) {
+                      <span class="detail__allergens">
+                        @for (a of item.allergens; track a; let last = $last) {
+                          {{ 'allergens.' + a | translate }}{{ last ? '' : ', ' }}
+                        }
+                      </span>
+                    }
+
+                    <span class="detail__price">
+                      {{
+                        item.price * item.quantity
+                          | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale()
+                      }}
+                    </span>
+                  </li>
+                }
+              </ul>
+            </section>
+
+            <div class="detail__foot">
+              <button type="button" class="btn btn--danger btn--sm" (click)="remove(order)">
+                {{ 'admin.orders.actions.delete' | translate }}
+              </button>
+            </div>
+          </div>
+        }
+      </li>
+    }
+  </ul>
+}

@@ -1,0 +1,314 @@
+@use './styles/tokens' as *;
+
+/* ============================================================
+   Réinitialisation
+   ============================================================ */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  font-family: $font-body;
+  font-size: 16px;
+  line-height: 1.6;
+  color: $ink;
+  background: $canvas;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+
+h1, h2, h3, h4 {
+  font-family: $font-display;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+p { text-wrap: pretty; }
+
+a {
+  color: $blue-dark;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  @include focus-ring;
+}
+
+/* ============================================================
+   Accessibilité globale
+   ============================================================ */
+
+/* Lien « passer au contenu » — premier élément focusable de la page. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 2000;
+  padding: 12px 20px;
+  background: $blue-dark;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0 0 $r-md $r-md;
+  transition: top $t-fast $ease-out;
+
+  &:focus { top: 0; }
+}
+
+.sr-only { @include visually-hidden; }
+
+/* ============================================================
+   Utilitaires partagés
+   ============================================================ */
+.container { @include container; }
+
+.section {
+  padding-block: 64px;
+
+  @include up($bp-md) { padding-block: 88px; }
+  @include up($bp-lg) { padding-block: 104px; }
+}
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  min-height: 48px;
+  border: 2px solid transparent;
+  border-radius: $r-full;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform $t-fast $ease-out, box-shadow $t-fast $ease-out,
+              background-color $t-fast $ease-out, border-color $t-fast $ease-out;
+  @include focus-ring;
+
+  &:active:not(:disabled) { transform: translateY(1px); }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn--primary {
+  background: $blue-dark;
+  color: #fff;
+  box-shadow: $shadow-blue;
+
+  &:hover:not(:disabled) {
+    background: $blue-darker;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(27, 143, 212, 0.36);
+  }
+}
+
+.btn--gold {
+  background: $gold;
+  color: #2A1F00;              /* texte très foncé sur l'or : ~8.9:1 ✓ AA */
+  box-shadow: 0 8px 24px rgba(229, 168, 0, 0.3);
+
+  &:hover:not(:disabled) {
+    background: $gold-dark;
+    transform: translateY(-2px);
+  }
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: $line;
+  color: $ink;
+
+  &:hover:not(:disabled) {
+    border-color: $blue-dark;
+    color: $blue-dark;
+    background: $blue-tint;
+  }
+}
+
+.btn--danger {
+  background: transparent;
+  border-color: $danger;
+  color: $danger;
+
+  &:hover:not(:disabled) {
+    background: $danger;
+    color: #fff;
+  }
+}
+
+.btn--block { width: 100%; }
+
+.btn--sm {
+  padding: 9px 18px;
+  min-height: 40px;
+  font-size: 0.9rem;
+}
+
+/* ---------- Cartes ---------- */
+.card {
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  box-shadow: $shadow-xs;
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: $r-full;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Badges de statut de commande — partagés par l'admin, le compte client et le
+   suivi. Chaque paire fond/texte dépasse 4.5:1 (WCAG AA). */
+.badge--new {
+  background: $status-new-bg;
+  color: $status-new;
+}
+
+.badge--confirmed {
+  background: $status-confirmed-bg;
+  color: $status-confirmed;
+}
+
+.badge--preparing {
+  background: $status-preparing-bg;
+  color: $status-preparing;
+}
+
+.badge--delivered {
+  background: $status-delivered-bg;
+  color: $status-delivered;
+}
+
+/* ---------- Formulaires ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.field__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $ink;
+
+  /* Astérisque décoratif : l'information réelle passe par l'attribut
+     `required`, que les lecteurs d'écran annoncent déjà. */
+  .req {
+    color: $danger;
+    margin-left: 2px;
+  }
+}
+
+.field__control {
+  width: 100%;
+  padding: 13px 16px;
+  min-height: 48px;
+  border: 2px solid $line;
+  border-radius: $r-md;
+  background: $surface;
+  transition: border-color $t-fast $ease-out, box-shadow $t-fast $ease-out;
+
+  &::placeholder { color: $ink-faint; }
+
+  &:hover:not(:disabled) { border-color: #CFD8E0; }
+
+  &:focus {
+    outline: none;
+    border-color: $blue-dark;
+    box-shadow: 0 0 0 4px rgba(27, 143, 212, 0.16);
+  }
+
+  &.is-invalid {
+    border-color: $danger;
+
+    &:focus { box-shadow: 0 0 0 4px rgba(198, 40, 40, 0.14); }
+  }
+}
+
+textarea.field__control {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+select.field__control {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='none' stroke='%234A5560' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+}
+
+.field__error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: $danger;
+  @include enter(fade-in, $t-fast);
+}
+
+.field__hint {
+  font-size: 0.84rem;
+  color: $ink-soft;
+}
+
+.form-row {
+  display: grid;
+  gap: 0 18px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) { grid-template-columns: 1fr 1fr; }
+}

@@ -1,0 +1,159 @@
+rules_version = '2';
+
+// ════════════════════════════════════════════════════════════════════
+//  EarlyChop & Yamo — règles de sécurité Firestore
+//
+//  Modèle de rôles (depuis l'ajout des comptes clients) :
+//   • ADMIN  = un UID inscrit sur la liste blanche `admins/{uid}`.
+//   • CLIENT = tout autre utilisateur authentifié (Google Sign-In).
+//   • INVITÉ = non authentifié (peut consulter le menu et commander).
+//
+//  ⚠️ Point vital : `isAdmin()` NE se contente PLUS de « authentifié ».
+//  Avec Google Sign-In ouvert au public, tout client est authentifié ;
+//  seule la présence dans `admins/{uid}` confère les droits admin.
+//
+//  Séquence de bascule (voir README) : créer le doc admin AVANT de
+//  déployer ces règles, et n'activer Google Sign-In qu'ensuite.
+// ════════════════════════════════════════════════════════════════════
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // UID de l'administrateur principal. C'est un simple identifiant (non
+    // secret), sûr à inscrire dans les règles — qui ne sont elles-mêmes pas
+    // confidentielles. Le codage en dur évite tout « bootstrap » fragile :
+    // l'admin est reconnu dès le premier déploiement, sans script ni fenêtre
+    // temporairement ouverte.
+    // ⚠️ À REMPLACER par l'UID réel (Console > Authentication > Users).
+    function primaryAdminUid() {
+      return 'D1gWZTghFecBDHn3MezsAyN1Uhw1';
+    }
+
+    // Admin = l'UID principal, OU un UID ajouté ensuite dans `admins/{uid}`.
+    // `exists()` ne requiert aucune permission de lecture : les règles lisent
+    // toujours pour leur propre évaluation.
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.uid == primaryAdminUid()
+        || exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // ---------- Liste blanche des admins (personnel additionnel) ----------
+    // Un client peut vérifier son propre statut (lire admins/{sonUid}).
+    // Seul un admin existant peut ajouter du personnel — un client ordinaire
+    // ne peut donc pas s'auto-promouvoir.
+    match /admins/{uid} {
+      allow get: if isSignedIn() && request.auth.uid == uid;
+      allow list: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ---------- Plats ----------
+    // Lecture publique : c'est le menu affiché sur le site.
+    match /dishes/{dishId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ---------- Paramètres ----------
+    // Lecture publique : horaires, frais et config parrainage affichés au client.
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ---------- Comptes clients ----------
+    match /users/{uid} {
+      // Chacun lit son propre profil ; l'admin lit et liste tout le monde.
+      allow get: if isAdmin() || (isSignedIn() && request.auth.uid == uid);
+      allow list: if isAdmin();
+
+      // Création par le client lui-même, avec des valeurs initiales imposées :
+      // impossible de naître avec des points ou des récompenses déjà acquises.
+      allow create: if isSignedIn()
+                    && request.auth.uid == uid
+                    && isValidNewUser();
+
+      // L'admin modifie tout (points, ajustements). Le client ne peut toucher
+      // QUE ses champs de profil — jamais points/referralCode/referredBy/etc.
+      allow update: if isAdmin()
+                    || (isSignedIn() && request.auth.uid == uid && onlyProfileFields());
+
+      allow delete: if isAdmin();
+    }
+
+    function isValidNewUser() {
+      let d = request.resource.data;
+      return d.points == 0
+             && d.referrerCredited == false
+             && d.firstOrderDelivered == false
+             && d.welcomePerkUsed == false
+             && d.ordersCount == 0
+             && d.totalSpent == 0
+             && d.referralCode is string && d.referralCode.size() >= 4 && d.referralCode.size() <= 12
+             && (d.referredBy == null || (d.referredBy is string && d.referredBy != d.referralCode));
+    }
+
+    // Le client ne peut modifier que ces champs ; toute écriture touchant un
+    // champe « valeur » (points, referralCode, referredBy, flags…) est refusée.
+    function onlyProfileFields() {
+      let changed = request.resource.data.diff(resource.data).affectedKeys();
+      return changed.hasOnly(['displayName', 'photoURL', 'email', 'fcmToken']);
+    }
+
+    // ---------- Codes de parrainage (unicité + résolution code→parrain) ----------
+    match /referralCodes/{code} {
+      // Un filleul connecté résout le code de son parrain pour le figer.
+      allow get: if isSignedIn();
+      allow list: if isAdmin();
+      // On ne peut mapper un code que vers SOI, une seule fois (pas d'update).
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // ---------- Commandes ----------
+    match /orders/{orderId} {
+      // `get` public — suivi d'UNE commande par son id imprévisible.
+      allow get: if true;
+
+      // `list` : l'admin voit tout ; un client ne liste QUE ses propres
+      // commandes (la requête doit filtrer sur son userId — sinon refus).
+      allow list: if isAdmin()
+                  || (isSignedIn() && request.query.limit <= 100
+                      && resource.data.userId == request.auth.uid);
+
+      // Création publique validée. Si un userId est fourni, il doit être
+      // celui de l'auteur : impossible d'attribuer une commande à autrui.
+      allow create: if isValidNewOrder();
+
+      allow update, delete: if isAdmin();
+    }
+
+    function isValidNewOrder() {
+      let d = request.resource.data;
+      return d.keys().hasAll([
+               'clientName', 'email', 'phone', 'address',
+               'items', 'total', 'status', 'createdAt'
+             ])
+             && d.status == 'new'
+             && d.clientName is string && d.clientName.size() > 0 && d.clientName.size() < 120
+             && d.email is string && d.email.size() < 200
+             && d.phone is string && d.phone.size() < 40
+             && d.address is string && d.address.size() < 300
+             && d.items is list && d.items.size() > 0 && d.items.size() <= 60
+             && d.total is number && d.total >= 0 && d.total < 10000
+             && d.notes.size() < 1000
+             && (!('userId' in d) || d.userId == null || d.userId == request.auth.uid);
+    }
+
+    // Tout le reste est refusé par défaut.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@use 'styles/tokens' as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+
+  /* Compense la navbar fixe. */
+  padding-top: 68px;
+
+  @include up($bp-md) { padding-top: 76px; }
+
+  /* La barre panier mobile flotte au-dessus du contenu : on réserve la
+     place pour qu'elle ne masque jamais la fin de page. */
+  @include mobile-only {
+    padding-bottom: 84px;
+  }
+
+  /* `tabindex="-1"` rend la cible du lien d'évitement focusable, mais on ne
+     veut pas d'anneau visible quand le focus y arrive par ce biais. */
+  &:focus { outline: none; }
+}
+
+.app-main--admin {
+  padding-top: 0;
+
+  @include up($bp-md) { padding-top: 0; }
+  @include mobile-only { padding-bottom: 0; }
+}

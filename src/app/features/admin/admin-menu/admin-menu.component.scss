@@ -1,0 +1,382 @@
+@use 'styles/tokens' as *;
+@use 'styles/admin' as *;
+
+.layout {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 1fr;
+  align-items: start;
+
+  @include up($bp-lg) { grid-template-columns: 1fr 1.1fr; }
+}
+
+.form-panel {
+  @include up($bp-lg) {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+/* ═══════════ Onglets de langue ═══════════ */
+.langtabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 20px;
+  background: $canvas;
+  border-radius: $r-full;
+}
+
+.langtabs__btn {
+  flex: 1;
+  padding: 9px 16px;
+  min-height: 42px;
+  background: transparent;
+  border: none;
+  border-radius: $r-full;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: $ink-soft;
+  transition: all $t-fast $ease-out;
+  @include focus-ring;
+
+  &.is-active {
+    background: $surface;
+    color: $blue-dark;
+    box-shadow: $shadow-xs;
+  }
+}
+
+.emoji-input {
+  max-width: 110px;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+/* ═══════════ Téléversement ═══════════ */
+.upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  min-height: 46px;
+  background: $blue-tint;
+  border: 2px dashed $blue-dark;
+  border-radius: $r-md;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $blue-dark;
+  cursor: pointer;
+  transition: background-color $t-fast $ease-out;
+
+  input { @include visually-hidden; }
+
+  &:hover { background: $blue-light; }
+
+  &:has(input:focus-visible) {
+    outline: 3px solid $blue-dark;
+    outline-offset: 3px;
+  }
+
+  &.is-busy {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+/* Barre de progression du téléversement. */
+.upload-progress {
+  position: relative;
+  height: 26px;
+  margin-top: 10px;
+  background: $line-soft;
+  border-radius: $r-full;
+  overflow: hidden;
+}
+
+.upload-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, $blue, $blue-dark);
+  border-radius: $r-full;
+  transition: width 200ms $ease-out;
+}
+
+.upload-progress__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: $ink;
+}
+
+/* Repli « ou coller une URL » — replié par défaut, dépannage discret. */
+.url-alt {
+  margin-top: 10px;
+
+  summary {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: $blue-dark;
+    cursor: pointer;
+    padding: 4px 0;
+    @include focus-ring;
+  }
+
+  input {
+    margin-top: 8px;
+  }
+}
+
+/* ═══════════ Aperçu ═══════════ */
+.preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 12px;
+  background: $canvas;
+  border: 1px solid $line;
+  border-radius: $r-md;
+
+  img {
+    width: 84px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: $r-sm;
+    background: $line-soft;
+  }
+}
+
+.preview__remove {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid $line;
+  border-radius: $r-full;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $danger;
+  @include focus-ring($danger);
+
+  &:hover {
+    background: $danger;
+    border-color: $danger;
+    color: #fff;
+  }
+}
+
+/* ═══════════ Options ═══════════ */
+.checks {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 20px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 13px;
+  min-height: 46px;
+  background: $canvas;
+  border: 1px solid $line;
+  border-radius: $r-md;
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: $ink;
+  cursor: pointer;
+  transition: all $t-fast $ease-out;
+
+  input {
+    width: 18px;
+    height: 18px;
+    accent-color: $blue-dark;
+    cursor: pointer;
+  }
+
+  &:hover { border-color: $blue-dark; }
+
+  &:has(input:checked) {
+    background: $blue-tint;
+    border-color: $blue-dark;
+  }
+
+  &:has(input:focus-visible) {
+    outline: 3px solid $blue-dark;
+    outline-offset: 2px;
+  }
+}
+
+/* ═══════════ Allergènes ═══════════ */
+.allergens {
+  padding: 0;
+  margin: 0 0 22px;
+  border: none;
+}
+
+.allergens__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.chip {
+  padding: 8px 14px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  background: $canvas;
+  border: 2px solid $line;
+  border-radius: $r-full;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $ink-soft;
+  cursor: pointer;
+  transition: all $t-fast $ease-out;
+
+  input { @include visually-hidden; }
+
+  &:hover { border-color: #CFD8E0; }
+
+  &:has(input:focus-visible) {
+    outline: 3px solid $blue-dark;
+    outline-offset: 2px;
+  }
+
+  &.is-on {
+    background: $warning-bg;
+    border-color: $warning;
+    color: $warning;
+  }
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ═══════════ Liste des plats ═══════════ */
+.list-empty {
+  padding: 28px 0;
+  text-align: center;
+  color: $ink-soft;
+  font-size: 0.92rem;
+}
+
+.dishes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dishrow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 0;
+  border-bottom: 1px solid $line-soft;
+
+  &:last-child { border-bottom: none; }
+
+  &--off { opacity: 0.55; }
+}
+
+.dishrow__thumb {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, $blue-light, $gold-light);
+  border-radius: $r-md;
+  font-size: 1.5rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.dishrow__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.dishrow__name {
+  font-weight: 600;
+  font-size: 0.94rem;
+  color: $ink;
+}
+
+.dishrow__star {
+  margin-left: 5px;
+  color: $gold-dark;
+}
+
+.dishrow__meta {
+  margin-top: 2px;
+  font-size: 0.81rem;
+  color: $ink-soft;
+}
+
+.dishrow__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ---------- Interrupteur ---------- */
+.toggle {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+  background: $line;
+  border: none;
+  border-radius: $r-full;
+  transition: background-color $t-base $ease-out;
+  @include focus-ring;
+
+  &.is-on { background: $success; }
+}
+
+.toggle__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: $r-full;
+  box-shadow: $shadow-xs;
+  transition: transform $t-base $ease-out;
+
+  .toggle.is-on & { transform: translateX(20px); }
+}
+
+.linkbtn {
+  padding: 5px 3px;
+  background: transparent;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $blue-dark;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  @include focus-ring;
+
+  &:hover { color: $blue-darker; }
+
+  &--danger {
+    color: $danger;
+
+    &:hover { color: #9E2020; }
+  }
+}

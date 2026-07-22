@@ -1,0 +1,212 @@
+@use 'styles/tokens' as *;
+
+.menu-page {
+  padding-block: 40px 80px;
+
+  @include up($bp-md) { padding-block: 56px 96px; }
+}
+
+/* ═══════════ En-tête ═══════════ */
+.menu-head {
+  text-align: center;
+  margin-bottom: 34px;
+}
+
+.menu-head__title {
+  font-size: clamp(1.9rem, 4.6vw, 2.9rem);
+  margin-bottom: 10px;
+  color: $ink;
+  @include enter(fade-up, $t-slow);
+}
+
+.menu-head__subtitle {
+  max-width: 50ch;
+  margin-inline: auto;
+  color: $ink-soft;
+  @include enter(fade-up, $t-slow, 80ms);
+}
+
+/* ═══════════ Barre d'outils ═══════════ */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 22px;
+  padding: 20px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  box-shadow: $shadow-xs;
+}
+
+/* ---------- Recherche ---------- */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search__icon {
+  position: absolute;
+  left: 16px;
+  font-size: 0.98rem;
+  pointer-events: none;
+}
+
+.search__input {
+  width: 100%;
+  padding: 13px 46px;
+  min-height: 48px;
+  border: 2px solid $line;
+  border-radius: $r-full;
+  background: $canvas;
+  transition: border-color $t-fast $ease-out, box-shadow $t-fast $ease-out,
+              background-color $t-fast $ease-out;
+
+  &::placeholder { color: $ink-faint; }
+
+  /* Retire la croix native de Safari/Chrome : on fournit la nôtre, qui a une
+     zone de clic correcte et un libellé accessible. */
+  &::-webkit-search-cancel-button { display: none; }
+
+  &:focus {
+    outline: none;
+    background: $surface;
+    border-color: $blue-dark;
+    box-shadow: 0 0 0 4px rgba(27, 143, 212, 0.16);
+  }
+}
+
+.search__clear {
+  position: absolute;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  border-radius: $r-full;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: $ink-faint;
+  transition: background-color $t-fast $ease-out, color $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    background: $line-soft;
+    color: $ink;
+  }
+}
+
+/* ---------- Catégories ---------- */
+.cats {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  /* Défilement horizontal sans barre visible sur mobile : la liste de
+     catégories ne doit jamais provoquer de scroll horizontal de la page. */
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+
+  @include up($bp-md) {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+.cats__btn {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  min-height: 44px;
+  background: $canvas;
+  border: 2px solid transparent;
+  border-radius: $r-full;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: $ink-soft;
+  white-space: nowrap;
+  transition: all $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    background: $blue-tint;
+    color: $blue-dark;
+  }
+
+  &.is-active {
+    background: $blue-dark;
+    border-color: $blue-dark;
+    color: #fff;
+    box-shadow: $shadow-blue;
+  }
+}
+
+/* ---------- Filtres alimentaires ---------- */
+.diet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-top: 1px solid $line-soft;
+  padding-top: 16px;
+}
+
+.diet__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  min-height: 44px;
+  background: $canvas;
+  border: 2px solid $line;
+  border-radius: $r-full;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: $ink-soft;
+  cursor: pointer;
+  transition: all $t-fast $ease-out;
+
+  /* La case reste dans le DOM (donc focusable et annoncée) mais invisible :
+     c'est la pastille entière qui sert de cible de clic. */
+  input {
+    @include visually-hidden;
+  }
+
+  &:hover { border-color: #CFD8E0; }
+
+  /* L'anneau de focus doit suivre la case cachée, sinon la navigation
+     clavier devient invisible. */
+  &:has(input:focus-visible) {
+    outline: 3px solid $blue-dark;
+    outline-offset: 3px;
+  }
+
+  &.is-on {
+    background: $blue-light;
+    border-color: $blue-dark;
+    color: $blue-darker;
+  }
+}
+
+/* ═══════════ Résultats ═══════════ */
+.result-count {
+  margin-bottom: 20px;
+  font-size: 0.89rem;
+  font-weight: 500;
+  color: $ink-soft;
+}
+
+.grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-sm) { grid-template-columns: repeat(2, 1fr); }
+  @include up($bp-lg) { grid-template-columns: repeat(3, 1fr); }
+  @include up($bp-xl) { grid-template-columns: repeat(4, 1fr); }
+}

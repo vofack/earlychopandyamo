@@ -1,0 +1,114 @@
+@use 'styles/tokens' as *;
+@use 'styles/admin' as *;
+
+.search {
+  margin-bottom: 20px;
+  max-width: 420px;
+}
+
+/* Le tableau défile horizontalement sur mobile plutôt que de déborder. */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  background: $surface;
+  box-shadow: $shadow-xs;
+}
+
+.ctable {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid $line-soft;
+  }
+
+  th {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $ink-soft;
+    background: $canvas;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: $blue-tint; }
+
+  .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.cust {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cust__name { font-weight: 600; color: $ink; }
+.cust__email { font-size: 0.8rem; color: $ink-soft; }
+.cust__since { font-size: 0.74rem; color: $ink-faint; }
+
+.code {
+  padding: 3px 8px;
+  background: $blue-light;
+  border-radius: $r-sm;
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: $blue-darker;
+}
+
+.ref { color: $ink; }
+.muted { color: $ink-faint; }
+
+.meal-badge {
+  padding: 3px 9px;
+  background: $gold-light;
+  border-radius: $r-full;
+  font-weight: 800;
+  color: $gold-text;
+}
+
+.adjust {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.adjust__btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  background: $canvas;
+  border: 1.5px solid $line;
+  border-radius: $r-sm;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: $blue-dark;
+  transition: all $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover { background: $blue-dark; color: #fff; border-color: $blue-dark; }
+}
+
+.adjust__more {
+  padding: 5px 10px;
+  background: transparent;
+  border: 1.5px solid $line;
+  border-radius: $r-sm;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $ink-soft;
+  @include focus-ring;
+
+  &:hover { border-color: $blue-dark; color: $blue-dark; }
+}

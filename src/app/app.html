@@ -1,0 +1,22 @@
+@if (!isAdminArea()) {
+  <!-- Premier élément focusable de la page : permet à un utilisateur au
+       clavier de sauter la navigation pour atteindre le contenu. -->
+  <a class="skip-link" href="#main">{{ 'nav.skipToContent' | translate }}</a>
+
+  <app-navbar />
+}
+
+<main id="main" tabindex="-1" class="app-main" [class.app-main--admin]="isAdminArea()">
+  <router-outlet />
+</main>
+
+@if (!isAdminArea()) {
+  <app-footer />
+  <app-cart />
+}
+
+@if (showMobileCartBar()) {
+  <app-mobile-cart-bar />
+}
+
+<app-toast />

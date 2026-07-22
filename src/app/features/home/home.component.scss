@@ -1,0 +1,352 @@
+@use 'styles/tokens' as *;
+
+/* ═══════════════ Hero ═══════════════ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  /* Fond de repli sombre : si la photo ne charge pas, le texte blanc reste
+     parfaitement lisible (aucune page « cassée »). */
+  background: linear-gradient(165deg, $blue-darker 0%, #0A1E2C 55%, #12080A 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Photo plein cadre, sous le voile et le contenu. */
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Voile sombre dégradé — assez opaque pour que le blanc dépasse 4.5:1 (AA)
+   même sur les zones claires de la photo (l'assiette, le fufu). */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      165deg,
+      rgba(8, 20, 30, 0.82) 0%,
+      rgba(8, 20, 30, 0.58) 45%,
+      rgba(8, 20, 30, 0.74) 100%
+    );
+  pointer-events: none;
+}
+
+/* Halo doré discret, pour réchauffer le coin supérieur droit. */
+.hero__glow {
+  position: absolute;
+  top: -180px;
+  right: -140px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(229, 168, 0, 0.22), transparent 68%);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;      /* au-dessus de la photo et du voile */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-block: 64px 76px;
+
+  @include up($bp-md) { padding-block: 92px 104px; }
+  @include up($bp-lg) { padding-block: 116px 128px; }
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 20px;
+  margin-bottom: 26px;
+  background: $gold;
+  color: #2A1F00;            /* 8.9:1 sur l'or ✓ AA */
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  border-radius: $r-full;
+  box-shadow: 0 6px 20px rgba(229, 168, 0, 0.34);
+  @include enter(fade-up, $t-slow);
+}
+
+.hero__badge-dot {
+  width: 8px;
+  height: 8px;
+  background: #2A1F00;
+  border-radius: $r-full;
+}
+
+.hero__title {
+  /* `min(…, 100%)` est crucial : `.hero__inner` étant en `align-items: center`,
+     un enfant avec une max-width en `ch` peut dépasser la largeur de l'écran
+     (au lieu d'être contraint), ce qui provoque un débordement horizontal de
+     TOUTE la page sur mobile. Le plafond à 100% l'en empêche. */
+  max-width: min(15ch, 100%);
+  font-size: clamp(2.15rem, 6.4vw, 4.15rem);
+  color: #fff;
+  /* Légère ombre portée : renforce le détachement sur les rares zones claires
+     de la photo, sans assombrir la typo. */
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  margin-bottom: 20px;
+  @include enter(fade-up, $t-slow, 90ms);
+}
+
+.hero__subtitle {
+  max-width: min(54ch, 100%);
+  font-size: clamp(1rem, 2.1vw, 1.18rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  margin-bottom: 34px;
+  @include enter(fade-up, $t-slow, 180ms);
+}
+
+.hero__actions {
+  @include enter(fade-up, $t-slow, 270ms);
+}
+
+.hero__cta {
+  padding: 17px 38px;
+  font-size: 1.08rem;
+
+  span { transition: transform $t-fast $ease-out; }
+
+  &:hover span { transform: translateX(4px); }
+}
+
+/* ---------- Pastilles ---------- */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin-top: 40px;
+  /* CRUCIAL : `.hero__inner` est en `align-items: center`, donc sans largeur
+     explicite `.pills` se réduit à la largeur de son contenu (une seule ligne)
+     et `flex-wrap` ne s'enclenche jamais — la ligne déborde alors et se fait
+     rogner par l'`overflow: hidden` du hero. Forcer 100% rétablit l'enroulement. */
+  width: 100%;
+
+  @include mobile-only {
+    gap: 8px;
+  }
+}
+
+/* Pastilles en « verre sombre » sur la photo. */
+.pills__item {
+  padding: 9px 18px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: $r-full;
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  @include enter(fade-up, $t-base);
+
+  @include mobile-only {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ═══════════════ Bannière de fermeture ═══════════════ */
+.closed-banner {
+  background: $warning-bg;
+  border-block: 1px solid rgba(154, 103, 0, 0.28);
+}
+
+.closed-banner__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding-block: 18px;
+
+  strong {
+    color: $warning;         /* 5.2:1 sur #FFF8E1 ✓ AA */
+    font-size: 1rem;
+  }
+
+  p {
+    margin-top: 3px;
+    font-size: 0.9rem;
+    color: $ink-soft;
+  }
+}
+
+.closed-banner__icon { font-size: 1.5rem; }
+
+.closed-banner__when {
+  margin-left: 8px;
+  font-weight: 600;
+  color: $ink;
+}
+
+/* ═══════════════ En-têtes de section ═══════════════ */
+.section__head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section__title {
+  font-size: clamp(1.7rem, 3.7vw, 2.5rem);
+  margin-bottom: 12px;
+  color: $ink;
+}
+
+.section__subtitle {
+  max-width: 52ch;
+  margin-inline: auto;
+  color: $ink-soft;
+  font-size: 1.02rem;
+}
+
+/* ═══════════════ Atouts ═══════════════ */
+.features {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-sm) { grid-template-columns: repeat(2, 1fr); }
+  @include up($bp-lg) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.feature {
+  padding: 28px 24px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  transition: transform $t-base $ease-out, box-shadow $t-base $ease-out,
+              border-color $t-base $ease-out;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-md;
+    border-color: rgba(27, 143, 212, 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover { transform: none; }
+  }
+}
+
+.feature__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 18px;
+  font-size: 1.6rem;
+  background: $blue-light;
+  border-radius: $r-md;
+}
+
+.feature__title {
+  font-size: 1.12rem;
+  margin-bottom: 8px;
+  color: $ink;
+}
+
+.feature__text {
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: $ink-soft;
+}
+
+/* ═══════════════ Avis ═══════════════ */
+.reviews-section {
+  background: $surface;
+  border-block: 1px solid $line;
+}
+
+.reviews {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+
+  @include up($bp-md) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px;
+  margin: 0;
+  background: $canvas;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+}
+
+.review__stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 14px;
+  font-size: 1.05rem;
+  color: $gold-dark;         /* #C08F00 : 3.9:1 — acceptable, glyphe large et
+                                l'information est doublée par aria-label. */
+}
+
+.review__text {
+  flex: 1;
+  margin: 0 0 18px;
+  font-size: 0.97rem;
+  line-height: 1.72;
+  color: $ink;
+  font-style: italic;
+}
+
+.review__author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 16px;
+  border-top: 1px solid $line;
+
+  strong {
+    font-size: 0.94rem;
+    color: $ink;
+  }
+
+  span {
+    font-size: 0.85rem;
+    color: $ink-soft;
+  }
+}
+
+/* ═══════════════ Bandeau final ═══════════════ */
+.cta-band {
+  background: linear-gradient(135deg, $blue-dark, $blue-darker);
+  color: #fff;
+}
+
+.cta-band__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  text-align: center;
+  padding-block: 64px;
+
+  @include up($bp-md) {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    padding-block: 72px;
+  }
+}
+
+.cta-band__title {
+  max-width: 20ch;
+  font-size: clamp(1.55rem, 3.4vw, 2.25rem);
+  color: #fff;
+}

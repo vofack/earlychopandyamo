@@ -1,0 +1,108 @@
+<div class="tracking container">
+  @if (loading()) {
+    <div class="tracking__loading">
+      <app-skeleton variant="row" [count]="4" [label]="'common.loading' | translate" />
+    </div>
+  } @else if (!order()) {
+    <app-empty-state
+      icon="🔎"
+      titleKey="tracking.notFound.title"
+      textKey="tracking.notFound.text"
+      ctaKey="tracking.notFound.cta"
+      ctaLink="/"
+    />
+  } @else if (order(); as o) {
+    <header class="tracking__head">
+      <h1 class="tracking__title">{{ 'tracking.title' | translate }}</h1>
+      <p class="tracking__number">{{ 'tracking.orderNumber' | translate: { id: shortId() } }}</p>
+
+      @if (o.createdAt) {
+        <p class="tracking__date">
+          {{
+            'tracking.placedAt'
+              | translate: { date: (o.createdAt.toDate() | date: 'medium' : undefined : language.locale()) }
+          }}
+        </p>
+      }
+
+      @if (o.status !== 'delivered') {
+        <p class="tracking__estimate">
+          {{ 'tracking.estimate' | translate: { time: deliveryEstimate } }}
+        </p>
+      }
+    </header>
+
+    <!-- ═══════════ Timeline ═══════════
+         `aria-live` : le statut change en direct sans action du client, il
+         faut donc l'annoncer aux lecteurs d'écran. -->
+    <ol class="timeline" aria-live="polite">
+      @for (step of steps; track step; let i = $index; let last = $last) {
+        <li
+          class="tl"
+          [class.tl--done]="i < currentStep()"
+          [class.tl--current]="i === currentStep()"
+          [class.tl--last]="last"
+        >
+          <div class="tl__marker">
+            @if (i < currentStep()) {
+              <span aria-hidden="true">✓</span>
+            } @else {
+              <span aria-hidden="true">{{ i + 1 }}</span>
+            }
+          </div>
+
+          <div class="tl__body">
+            <p class="tl__label">{{ 'tracking.steps.' + step | translate }}</p>
+            <p class="tl__hint">{{ 'tracking.stepsHint.' + step | translate }}</p>
+
+            @if (timestampFor(step); as at) {
+              <p class="tl__time">{{ at | date: 'shortTime' : undefined : language.locale() }}</p>
+            }
+          </div>
+        </li>
+      }
+    </ol>
+
+    <!-- ═══════════ Détails ═══════════ -->
+    <div class="panels">
+      <section class="panel">
+        <h2 class="panel__title">{{ 'tracking.deliveryTo' | translate }}</h2>
+        <p class="panel__line">{{ o.clientName }}</p>
+        <p class="panel__line panel__line--soft">{{ o.address }}</p>
+        <p class="panel__line panel__line--soft">{{ o.postalCode }}</p>
+        <p class="panel__line panel__line--soft">{{ o.phone }}</p>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel__title">{{ 'tracking.yourOrder' | translate }}</h2>
+
+        <ul class="panel__items">
+          @for (item of o.items; track item.dishId) {
+            <li class="panel__item">
+              <span class="panel__qty">{{ item.quantity }}×</span>
+              <span class="panel__name">{{ item.name | localized }}</span>
+              <span class="panel__price">
+                {{
+                  item.price * item.quantity
+                    | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale()
+                }}
+              </span>
+            </li>
+          }
+        </ul>
+
+        <p class="panel__total">
+          <span>{{ 'tracking.total' | translate }}</span>
+          <strong>
+            {{ o.total | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+          </strong>
+        </p>
+      </section>
+    </div>
+
+    <p class="tracking__help">
+      {{ 'tracking.help' | translate }}
+      <a [href]="whatsappLink()" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
+    </p>
+  }
+</div>

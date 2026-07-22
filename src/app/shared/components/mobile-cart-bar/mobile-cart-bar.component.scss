@@ -1,0 +1,61 @@
+@use 'styles/tokens' as *;
+
+:host {
+  /* Strictement mobile : au-delà de 768px, l'icône de la navbar suffit. */
+  @include up($bp-md) { display: none; }
+}
+
+.bar {
+  position: fixed;
+  z-index: 880;
+  left: 14px;
+  right: 14px;
+  /* `env(safe-area-inset-bottom)` évite que la barre passe sous l'indicateur
+     d'accueil des iPhone récents. */
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: calc(100% - 28px);
+  padding: 14px 18px;
+  min-height: 56px;
+
+  background: $blue-dark;
+  color: #fff;
+  border: none;
+  border-radius: $r-full;
+  box-shadow: 0 10px 30px rgba(18, 104, 155, 0.42);
+
+  @include enter(slide-up, $t-base);
+  @include focus-ring($gold);
+
+  &:active { transform: translateY(1px); }
+}
+
+.bar__count {
+  display: grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding-inline: 7px;
+  background: $gold;
+  color: #2A1F00;          /* 8.9:1 sur l'or ✓ AA */
+  font-size: 0.82rem;
+  font-weight: 800;
+  border-radius: $r-full;
+  flex-shrink: 0;
+}
+
+.bar__label {
+  flex: 1;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.bar__total {
+  font-weight: 800;
+  font-size: 1.02rem;
+  font-variant-numeric: tabular-nums;
+}

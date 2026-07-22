@@ -1,0 +1,171 @@
+@if (ui.cartOpen()) {
+  <!-- Voile cliquable. `aria-hidden` : la fermeture reste accessible au
+       clavier par Échap et par le bouton × du panneau. -->
+  <div class="overlay" (click)="ui.closeCart()" aria-hidden="true"></div>
+
+  <aside
+    class="drawer"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="'cart.title' | translate"
+  >
+    <header class="drawer__head">
+      <h2 class="drawer__title">
+        {{ 'cart.title' | translate }}
+        @if (cart.count() > 0) {
+          <span class="drawer__count">{{ cart.count() }}</span>
+        }
+      </h2>
+
+      <button
+        type="button"
+        class="drawer__close"
+        (click)="ui.closeCart()"
+        [attr.aria-label]="'common.close' | translate"
+      >
+        ×
+      </button>
+    </header>
+
+    @if (cart.isEmpty()) {
+      <div class="drawer__empty">
+        <div class="drawer__empty-icon" aria-hidden="true">🛒</div>
+        <h3>{{ 'cart.empty.title' | translate }}</h3>
+        <p>{{ 'cart.empty.text' | translate }}</p>
+        <button type="button" class="btn btn--primary" (click)="ui.closeCart()">
+          {{ 'cart.empty.cta' | translate }}
+        </button>
+      </div>
+    } @else {
+      <ul class="items">
+        @for (item of cart.items(); track item.dishId) {
+          <li class="item">
+            <div class="item__thumb" aria-hidden="true">
+              @if (item.imageUrl) {
+                <img [src]="item.imageUrl" [alt]="''" loading="lazy" />
+              } @else {
+                <span>{{ item.emoji }}</span>
+              }
+            </div>
+
+            <div class="item__body">
+              <p class="item__name">{{ item.name | localized }}</p>
+              <p class="item__unit">
+                {{ item.price | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+              </p>
+
+              @if (item.allergens?.length) {
+                <p class="item__allergens">
+                  {{ 'menu.allergensLabel' | translate }} :
+                  @for (a of item.allergens; track a; let last = $last) {
+                    <span>{{ 'allergens.' + a | translate }}{{ last ? '' : ', ' }}</span>
+                  }
+                </p>
+              }
+            </div>
+
+            <div class="item__side">
+              <div class="stepper">
+                <button
+                  type="button"
+                  class="stepper__btn"
+                  (click)="cart.decrement(item.dishId)"
+                  [attr.aria-label]="'menu.decrease' | translate: { name: item.name | localized }"
+                >
+                  −
+                </button>
+                <span class="stepper__value" aria-live="polite">{{ item.quantity }}</span>
+                <button
+                  type="button"
+                  class="stepper__btn"
+                  (click)="cart.increment(item.dishId)"
+                  [attr.aria-label]="'menu.increase' | translate: { name: item.name | localized }"
+                >
+                  +
+                </button>
+              </div>
+
+              <p class="item__line-total">
+                {{
+                  item.price * item.quantity
+                    | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale()
+                }}
+              </p>
+
+              <button
+                type="button"
+                class="item__remove"
+                (click)="cart.remove(item.dishId)"
+                [attr.aria-label]="'cart.remove' | translate: { name: item.name | localized }"
+              >
+                {{ 'common.delete' | translate }}
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <footer class="drawer__foot">
+        <dl class="totals">
+          <div class="totals__row">
+            <dt>{{ 'cart.subtotal' | translate }}</dt>
+            <dd>
+              {{ cart.subtotal() | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+            </dd>
+          </div>
+
+          <div class="totals__row">
+            <dt>{{ 'cart.delivery' | translate }}</dt>
+            <dd>
+              @if (settings.deliveryFee() === 0) {
+                <span class="totals__free">{{ 'cart.free' | translate }}</span>
+              } @else {
+                {{
+                  settings.deliveryFee()
+                    | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale()
+                }}
+              }
+            </dd>
+          </div>
+
+          <div class="totals__row totals__row--grand">
+            <dt>{{ 'cart.total' | translate }}</dt>
+            <dd>
+              {{ cart.total() | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+            </dd>
+          </div>
+        </dl>
+
+        @if (missingForMin() > 0) {
+          <p class="notice notice--warn" role="status">
+            {{
+              'cart.minOrder'
+                | translate
+                  : {
+                      amount:
+                        settings.minOrder()
+                        | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale(),
+                      missing:
+                        missingForMin()
+                        | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale()
+                    }
+            }}
+          </p>
+        }
+
+        @if (!settings.isOpenNow()) {
+          <p class="notice notice--warn" role="status">{{ 'cart.closed' | translate }}</p>
+        }
+
+        <button
+          type="button"
+          class="btn btn--primary btn--block"
+          [disabled]="!canCheckout()"
+          (click)="goToCheckout()"
+        >
+          {{ 'cart.checkout' | translate }}
+        </button>
+      </footer>
+    }
+  </aside>
+}

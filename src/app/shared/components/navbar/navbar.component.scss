@@ -1,0 +1,373 @@
+@use 'styles/tokens' as *;
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 900;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: box-shadow $t-base $ease-out, border-color $t-base $ease-out;
+
+  &--scrolled {
+    border-bottom-color: $line;
+    box-shadow: $shadow-sm;
+  }
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 68px;
+
+  @include up($bp-md) { height: 76px; }
+}
+
+/* ---------- Marque ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+  @include focus-ring;
+}
+
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  font-size: 1.35rem;
+  background: linear-gradient(135deg, $blue, $blue-dark);
+  border-radius: $r-md;
+  box-shadow: $shadow-blue;
+  transition: transform $t-base $ease-out;
+
+  .brand:hover & { transform: rotate(-8deg) scale(1.06); }
+
+  /* Légèrement plus compact sur mobile pour dégager de la place. */
+  @include mobile-only {
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+  }
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.brand__name {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 1.06rem;
+  color: $ink;
+
+  @include mobile-only { font-size: 0.96rem; }
+}
+
+.brand__tagline {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: $ink-soft;
+
+  @include mobile-only { display: none; }
+}
+
+/* ---------- Liens ---------- */
+.nav__links {
+  display: none;
+  gap: 30px;
+
+  @include up($bp-md) { display: flex; }
+
+  a {
+    position: relative;
+    padding: 6px 2px;
+    font-weight: 600;
+    font-size: 0.96rem;
+    color: $ink-soft;
+    text-decoration: none;
+    transition: color $t-fast $ease-out;
+    @include focus-ring;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2.5px;
+      background: $gold;
+      border-radius: $r-full;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform $t-base $ease-out;
+    }
+
+    &:hover { color: $ink; }
+
+    &.is-active {
+      color: $blue-dark;
+
+      &::after { transform: scaleX(1); }
+    }
+  }
+}
+
+/* ---------- Actions ---------- */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  /* Espaces resserrés sur mobile pour faire tenir connexion + panier + burger. */
+  @include mobile-only { gap: 5px; }
+}
+
+.lang-btn {
+  @include tap-target;
+  display: grid;
+  place-items: center;
+  padding-inline: 12px;
+  height: 44px;
+  background: transparent;
+  border: 2px solid $line;
+  border-radius: $r-full;
+  transition: border-color $t-fast $ease-out, background-color $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    border-color: $blue-dark;
+    background: $blue-tint;
+  }
+
+  /* Sur mobile, la langue passe dans le menu burger pour laisser la place au
+     bouton de connexion dans la barre. */
+  @include mobile-only { display: none; }
+}
+
+.lang-btn__code {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: $ink-soft;
+
+  .lang-btn:hover & { color: $blue-dark; }
+}
+
+/* ---------- Connexion / compte ---------- */
+/* Visible aussi sur mobile (demande explicite). La place est libérée en
+   déplaçant le sélecteur de langue dans le menu burger. */
+.login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding-inline: 14px;
+  background: $surface;
+  border: 2px solid $line;
+  border-radius: $r-full;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: $ink;
+  transition: border-color $t-fast $ease-out, background-color $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover:not(:disabled) {
+    border-color: $blue-dark;
+    background: $blue-tint;
+  }
+
+  &:disabled { opacity: 0.6; }
+}
+
+.login-btn__g {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+.login-btn__label {
+  /* Sur très petit écran, on ne garde que le logo Google. */
+  @include mobile-only { display: none; }
+}
+
+.account-btn {
+  @include tap-target;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: $r-full;
+  overflow: hidden;
+  background: $blue-light;
+  border: 2px solid transparent;
+  text-decoration: none;
+  transition: border-color $t-fast $ease-out, transform $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    border-color: $blue-dark;
+    transform: translateY(-1px);
+  }
+}
+
+.account-btn__avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account-btn__initial {
+  font-weight: 800;
+  font-size: 1rem;
+  color: $blue-darker;
+  text-transform: uppercase;
+}
+
+.cart-btn {
+  @include tap-target;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-radius: $r-full;
+  color: $ink;
+  transition: background-color $t-fast $ease-out, transform $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover {
+    background: $blue-tint;
+    color: $blue-dark;
+    transform: translateY(-1px);
+  }
+}
+
+.cart-btn__icon {
+  width: 23px;
+  height: 23px;
+}
+
+.cart-btn__badge {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 5px;
+  display: grid;
+  place-items: center;
+  background: $gold;
+  color: #2A1F00;             /* 8.9:1 sur l'or ✓ AA */
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: $r-full;
+  border: 2px solid #fff;
+  @include enter(scale-in, $t-base);
+}
+
+/* ---------- Menu mobile ---------- */
+.burger {
+  @include tap-target;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-radius: $r-full;
+  @include focus-ring;
+
+  @include up($bp-md) { display: none; }
+
+  &:hover { background: $blue-tint; }
+}
+
+/* Trois traits construits à partir d'un seul élément (::before / ::after),
+   ce qui permet la transformation en croix sans markup supplémentaire. */
+.burger__bar {
+  position: relative;
+  display: block;
+  width: 21px;
+  height: 2.5px;
+  background: $ink;
+  border-radius: $r-full;
+  transition: background-color $t-fast $ease-out;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 21px;
+    height: 2.5px;
+    background: $ink;
+    border-radius: $r-full;
+    transition: transform $t-base $ease-out;
+  }
+
+  &::before { top: -7px; }
+  &::after  { top: 7px; }
+
+  &.is-open {
+    background: transparent;
+
+    &::before { transform: translateY(7px) rotate(45deg); }
+    &::after  { transform: translateY(-7px) rotate(-45deg); }
+  }
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 20px 24px;
+  background: #fff;
+  border-top: 1px solid $line;
+  box-shadow: $shadow-md;
+  @include enter(fade-up, $t-base);
+
+  @include up($bp-md) { display: none; }
+
+  a {
+    padding: 15px 4px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: $ink;
+    text-decoration: none;
+    border-bottom: 1px solid $line-soft;
+    @include focus-ring;
+
+    &:last-child { border-bottom: none; }
+  }
+}
+
+.mobile-nav__lang {
+  padding: 15px 4px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $line-soft;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: $blue-dark;
+  @include focus-ring;
+}
+
+.mobile-nav__admin {
+  margin-top: 8px;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  color: $ink-faint !important;
+}

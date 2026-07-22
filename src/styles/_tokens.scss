@@ -1,0 +1,211 @@
+// ============================================================
+//  EarlyChop & Yamo — jetons de design
+//  Importé par styles.scss et par chaque composant qui en a besoin.
+// ============================================================
+
+// ---------- Couleurs de marque ----------
+$blue:        #1B8FD4;   // bleu ciel — couleur primaire
+$blue-dark:   #12689B;   // texte blanc dessus : contraste 4.6:1 ✓ AA
+$blue-darker: #0B4C74;
+$blue-light:  #E8F4FC;
+$blue-tint:   #F4FAFE;
+
+$gold:        #E5A800;   // or — APLATS, badges et bordures uniquement
+$gold-dark:   #C08F00;
+$gold-light:  #FFF6DC;
+
+// ⚠️ ACCESSIBILITÉ — à lire avant de toucher aux couleurs.
+// $gold (#E5A800) sur blanc ne donne que ~2.3:1, très en dessous du minimum
+// WCAG AA de 4.5:1 pour le texte courant. Il est donc INTERDIT de l'utiliser
+// pour du texte. Pour tout libellé, prix ou lien de teinte dorée, utiliser
+// $gold-text ci-dessous (~5.4:1 sur blanc).
+$gold-text:   #8A6500;
+
+// De la même façon, $blue sur blanc plafonne à ~3.3:1 : acceptable pour du
+// texte large (≥ 24px) ou gras (≥ 19px), jamais pour du corps de texte.
+// Pour du texte bleu de taille normale, utiliser $blue-dark.
+
+// ---------- Neutres ----------
+$ink:         #14181D;   // texte principal
+$ink-soft:    #4A5560;   // texte secondaire — 7.1:1 sur blanc ✓ AA
+$ink-faint:   #6B7681;   // texte tertiaire — 4.6:1 sur blanc ✓ AA (limite basse)
+$line:        #E3E8ED;
+$line-soft:   #F0F3F6;
+$surface:     #FFFFFF;
+$canvas:      #F7F9FB;
+
+// ---------- Sémantique ----------
+$success:      #157F4C;
+$success-bg:   #E6F6EE;
+$danger:       #C62828;
+$danger-bg:    #FDECEC;
+$warning:      #9A6700;
+$warning-bg:   #FFF8E1;
+$info:         $blue-dark;
+$info-bg:      $blue-light;
+
+// ---------- Statuts de commande ----------
+$status-new:        #C62828;
+$status-new-bg:     #FDECEC;
+$status-confirmed:  #12689B;
+$status-confirmed-bg: #E8F4FC;
+$status-preparing:  #9A6700;
+$status-preparing-bg: #FFF8E1;
+$status-delivered:  #157F4C;
+$status-delivered-bg: #E6F6EE;
+
+// ---------- Typographie ----------
+$font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+$font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+// ---------- Rayons ----------
+$r-sm:   8px;
+$r-md:   12px;
+$r-lg:   18px;
+$r-xl:   26px;
+$r-full: 999px;
+
+// ---------- Ombres ----------
+$shadow-xs: 0 1px 2px rgba(20, 24, 29, 0.06);
+$shadow-sm: 0 2px 8px rgba(20, 24, 29, 0.07);
+$shadow-md: 0 6px 20px rgba(20, 24, 29, 0.09);
+$shadow-lg: 0 16px 44px rgba(20, 24, 29, 0.13);
+$shadow-blue: 0 8px 24px rgba(27, 143, 212, 0.28);
+
+// ---------- Transitions ----------
+$ease-out:  cubic-bezier(0.22, 1, 0.36, 1);
+$ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+$t-fast: 160ms;
+$t-base: 260ms;
+$t-slow: 420ms;
+
+// ---------- Points de rupture ----------
+// Utilisés via le mixin `up()` — mobile-first, on ne descend jamais.
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1440px;
+
+@mixin up($bp) {
+  @media (min-width: $bp) { @content; }
+}
+
+/// Sous 768px : la barre panier mobile occupe le bas de l'écran.
+@mixin mobile-only {
+  @media (max-width: #{$bp-md - 1px}) { @content; }
+}
+
+// ---------- Conteneur ----------
+@mixin container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 20px;
+
+  @include up($bp-md) { padding-inline: 32px; }
+  @include up($bp-xl) { padding-inline: 40px; }
+}
+
+// ---------- Accessibilité ----------
+/// Anneau de focus homogène. Appliqué à TOUT élément interactif.
+@mixin focus-ring($color: $blue-dark) {
+  &:focus-visible {
+    outline: 3px solid $color;
+    outline-offset: 3px;
+    border-radius: $r-sm;
+  }
+}
+
+/// Masque visuellement sans retirer du flux des lecteurs d'écran.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/// Cible tactile minimale de 44x44px (recommandation WCAG 2.5.5).
+@mixin tap-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+// ---------- Animations ----------
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to   { transform: none; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: none; }
+}
+
+@keyframes shimmer {
+  from { background-position: -600px 0; }
+  to   { background-position: 600px 0; }
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.5); }
+  70%  { box-shadow: 0 0 0 12px rgba(198, 40, 40, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(198, 40, 40, 0); }
+}
+
+@keyframes checkmark-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/// Applique une animation d'entrée en la neutralisant si l'utilisateur a
+/// demandé la réduction des animations dans son système.
+@mixin enter($name, $duration: $t-slow, $delay: 0ms) {
+  & {
+    animation: $name $duration $ease-out $delay both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// ---------- Effet squelette ----------
+/// Le `& {}` autour des déclarations est requis : sans lui, Sass avertit que
+/// des propriétés suivent une règle imbriquée (la media query), un cas dont
+/// le comportement change dans les prochaines versions.
+@mixin skeleton {
+  & {
+    background: linear-gradient(90deg, $line-soft 25%, #E9EEF3 50%, $line-soft 75%);
+    background-size: 600px 100%;
+    animation: shimmer 1.3s linear infinite;
+    border-radius: $r-sm;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background: $line-soft;
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "indexes": [
+    {
+      "//": "Requis par « Mes commandes » : filtre userId + tri par date. Une requête combinant égalité et orderBy sur des champs différents exige un index composite, sinon elle échoue au runtime.",
+      "collectionGroup": "orders",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

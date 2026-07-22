@@ -1,0 +1,114 @@
+// ============================================================
+//  Motifs partagés par les écrans de l'espace admin.
+//  Importé par chaque *.component.scss de features/admin/.
+//  (Les styles de composant sont encapsulés : un partiel commun
+//   évite de redéfinir en-têtes, tuiles et badges cinq fois.)
+// ============================================================
+@use './tokens' as *;
+
+/* ═══════════ En-tête de page ═══════════ */
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.head__title {
+  font-size: clamp(1.5rem, 3.4vw, 2.05rem);
+  color: $ink;
+}
+
+.head__subtitle {
+  margin-top: 5px;
+  font-size: 0.94rem;
+  color: $ink-soft;
+}
+
+.head__alert {
+  padding: 10px 18px;
+  background: $status-new-bg;
+  border: 1px solid rgba(198, 40, 40, 0.32);
+  border-radius: $r-full;
+  font-size: 0.87rem;
+  font-weight: 700;
+  color: $status-new;
+  text-decoration: none;
+  animation: pulse-ring 2.4s ease-out infinite;
+
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+
+  &:hover { background: #FBDCDC; }
+}
+
+/* ═══════════ Tuiles de statistiques ═══════════ */
+.stats {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 32px;
+
+  @include up($bp-lg) { grid-template-columns: repeat(4, 1fr); }
+}
+
+.stat {
+  padding: 20px 18px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  box-shadow: $shadow-xs;
+  transition: transform $t-base $ease-out, box-shadow $t-base $ease-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-md;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover { transform: none; }
+  }
+
+  &--gold { border-color: rgba(229, 168, 0, 0.45); }
+}
+
+.stat__label {
+  font-size: 0.79rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: $ink-soft;
+  margin-bottom: 9px;
+}
+
+.stat__value {
+  font-family: $font-display;
+  font-size: clamp(1.5rem, 3.6vw, 2.05rem);
+  font-weight: 800;
+  color: $ink;
+  font-variant-numeric: tabular-nums;
+
+  .stat--gold & { color: $gold-text; }   /* PAS $gold : 5.4:1 ✓ AA */
+}
+
+/* Les badges de statut (.badge--new/confirmed/preparing/delivered) sont
+   désormais définis globalement dans styles.scss, partagés entre l'admin,
+   la page compte et le suivi client. */
+
+/* ═══════════ Panneau générique ═══════════ */
+.panel {
+  padding: 22px 20px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $r-lg;
+  box-shadow: $shadow-xs;
+}
+
+.panel__title {
+  font-size: 1.12rem;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid $line;
+  color: $ink;
+}

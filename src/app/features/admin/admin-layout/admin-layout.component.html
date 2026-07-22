@@ -1,0 +1,80 @@
+<div class="admin">
+  <!-- ═══════════ Barre supérieure (mobile) ═══════════ -->
+  <header class="admin__top">
+    <button
+      type="button"
+      class="admin__burger"
+      (click)="navOpen.set(!navOpen())"
+      [attr.aria-expanded]="navOpen()"
+      aria-controls="admin-nav"
+      [attr.aria-label]="(navOpen() ? 'nav.closeMenu' : 'nav.openMenu') | translate"
+    >
+      ☰
+    </button>
+
+    <span class="admin__brand">
+      <span aria-hidden="true">🍽️</span> {{ 'nav.brand' | translate }}
+    </span>
+
+    @if (orders.newCount() > 0) {
+      <span class="admin__alert" role="status">
+        {{ 'admin.orders.newCount' | translate: { count: orders.newCount() } }}
+      </span>
+    }
+  </header>
+
+  <!-- ═══════════ Navigation latérale ═══════════ -->
+  <nav
+    id="admin-nav"
+    class="admin__nav"
+    [class.is-open]="navOpen()"
+    [attr.aria-label]="'admin.nav.dashboard' | translate"
+  >
+    <div class="admin__nav-brand">
+      <span class="admin__nav-mark" aria-hidden="true">🍽️</span>
+      <span class="admin__nav-name">{{ 'nav.brand' | translate }}</span>
+    </div>
+
+    <ul class="admin__links">
+      @for (link of links; track link.path) {
+        <li>
+          <a
+            [routerLink]="['/admin', link.path]"
+            routerLinkActive="is-active"
+            (click)="navOpen.set(false)"
+          >
+            <span class="admin__icon" aria-hidden="true">{{ link.icon }}</span>
+            <span>{{ 'admin.nav.' + link.key | translate }}</span>
+
+            <!-- Badge des commandes non traitées : visible depuis n'importe
+                 quel écran de l'admin, pour ne jamais rater une commande. -->
+            @if (link.path === 'orders' && orders.newCount() > 0) {
+              <span class="admin__badge">{{ orders.newCount() }}</span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+
+    <div class="admin__nav-foot">
+      <button type="button" class="admin__lang" (click)="language.toggle()">
+        {{ language.current() === 'fr' ? 'English' : 'Français' }}
+      </button>
+
+      <a routerLink="/" class="admin__site">{{ 'admin.nav.viewSite' | translate }}</a>
+
+      <button type="button" class="admin__logout" (click)="logout()">
+        {{ 'admin.nav.logout' | translate }}
+      </button>
+    </div>
+  </nav>
+
+  @if (navOpen()) {
+    <div class="admin__scrim" (click)="navOpen.set(false)" aria-hidden="true"></div>
+  }
+
+  <!-- ═══════════ Contenu ═══════════ -->
+  <main class="admin__content">
+    <router-outlet />
+  </main>
+</div>

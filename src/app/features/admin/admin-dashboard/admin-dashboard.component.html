@@ -1,0 +1,83 @@
+<header class="head">
+  <div>
+    <h1 class="head__title">{{ 'admin.dashboard.title' | translate }}</h1>
+    <p class="head__subtitle">{{ 'admin.dashboard.welcome' | translate }}</p>
+  </div>
+
+  @if (orders.newCount() > 0) {
+    <a class="head__alert" routerLink="/admin/orders">
+      {{ 'admin.dashboard.newOrders' | translate: { count: orders.newCount() } }}
+    </a>
+  }
+</header>
+
+<!-- ═══════════ Statistiques ═══════════ -->
+@if (orders.loading()) {
+  <div class="stats">
+    <app-skeleton variant="stat" [count]="4" [label]="'common.loading' | translate" />
+  </div>
+} @else {
+  <div class="stats">
+    <article class="stat">
+      <p class="stat__label">{{ 'admin.dashboard.totalOrders' | translate }}</p>
+      <p class="stat__value">{{ orders.orders().length }}</p>
+    </article>
+
+    <article class="stat stat--gold">
+      <p class="stat__label">{{ 'admin.dashboard.revenue' | translate }}</p>
+      <p class="stat__value">
+        {{ orders.revenue() | currency: 'CAD' : 'symbol-narrow' : '1.0-0' : language.locale() }}
+      </p>
+    </article>
+
+    <article class="stat">
+      <p class="stat__label">{{ 'admin.dashboard.dishes' | translate }}</p>
+      <p class="stat__value">{{ dishCount() }}</p>
+    </article>
+
+    <article class="stat">
+      <p class="stat__label">{{ 'admin.dashboard.average' | translate }}</p>
+      <p class="stat__value">
+        {{ orders.averageBasket() | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+      </p>
+    </article>
+  </div>
+}
+
+<!-- ═══════════ Commandes récentes ═══════════ -->
+<section class="recent">
+  <div class="recent__head">
+    <h2 class="recent__title">{{ 'admin.orders.title' | translate }}</h2>
+    <a class="recent__all" routerLink="/admin/orders">{{ 'admin.orders.filterAll' | translate }} →</a>
+  </div>
+
+  @if (orders.loading()) {
+    <app-skeleton variant="row" [count]="3" [label]="'common.loading' | translate" />
+  } @else if (recent().length === 0) {
+    <p class="recent__empty">{{ 'admin.orders.empty.text' | translate }}</p>
+  } @else {
+    <ul class="recent__list">
+      @for (order of recent(); track order.id) {
+        <li class="recent__item">
+          <span class="recent__id">#{{ shortId(order.id) }}</span>
+
+          <span class="recent__name">{{ order.clientName }}</span>
+
+          <span class="badge" [class]="'badge--' + order.status">
+            {{ 'status.' + order.status | translate }}
+          </span>
+
+          <span class="recent__total">
+            {{ order.total | currency: 'CAD' : 'symbol-narrow' : '1.2-2' : language.locale() }}
+          </span>
+
+          @if (order.createdAt) {
+            <span class="recent__date">
+              {{ order.createdAt.toDate() | date: 'short' : undefined : language.locale() }}
+            </span>
+          }
+        </li>
+      }
+    </ul>
+  }
+</section>
