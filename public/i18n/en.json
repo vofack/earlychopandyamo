@@ -40,6 +40,10 @@
     "subtitle": "Home-cooked dishes made fresh the same day, delivered free anywhere in Montérégie.",
     "cta": "See our menu",
     "ctaSecondary": "Get in touch",
+    "account": {
+      "cta": "Create my account",
+      "hint": "With an account, track all your orders in real time, keep your full history, and earn free meals by referring friends."
+    },
     "pills": {
       "delivery": "Free delivery",
       "time": "30-45 min",

@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 
 import { AccountService } from './core/services/account.service';
+import { AuthService } from './core/services/auth.service';
 import { CartService } from './core/services/cart.service';
 import { SettingsService } from './core/services/settings.service';
 import { CartComponent } from './features/cart/cart.component';
@@ -33,6 +34,15 @@ export class App {
   private readonly cart = inject(CartService);
   private readonly settings = inject(SettingsService);
   private readonly account = inject(AccountService);
+  private readonly auth = inject(AuthService);
+
+  /**
+   * UID de la session précédente.
+   * `undefined` = premier verdict de Firebase pas encore rendu (on ne vide
+   * surtout pas le panier à ce moment-là, sinon un rechargement de page
+   * effacerait le panier d'un client connecté).
+   */
+  private previousUid: string | null | undefined = undefined;
 
   constructor() {
     // Les frais de livraison vivent dans Firestore, mais CartService reste
@@ -47,6 +57,32 @@ export class App {
     // l'ActivatedRoute racine, qui n'expose pas les query params au démarrage.
     const ref = new URLSearchParams(window.location.search).get('ref');
     if (ref) this.account.stashReferral(ref);
+
+    // Le panier appartient à la session. À la déconnexion — ou lorsqu'un autre
+    // compte prend la main sur le même appareil — on le vide, pour qu'un client
+    // n'hérite jamais du panier du précédent.
+    //
+    // Placé à la racine plutôt que dans chaque bouton « Déconnexion » : ainsi
+    // TOUTES les sorties de session sont couvertes (espace compte, admin,
+    // expiration du jeton), sans risque d'en oublier une.
+    effect(() => {
+      if (!this.auth.resolved()) return;
+      const uid = this.auth.user()?.uid ?? null;
+
+      // Premier verdict : on mémorise l'état sans rien vider.
+      if (this.previousUid === undefined) {
+        this.previousUid = uid;
+        return;
+      }
+
+      if (this.previousUid !== uid) {
+        // On ne vide que si quelqu'un ÉTAIT connecté. Un visiteur anonyme qui
+        // remplit son panier puis se connecte le conserve — ce serait absurde
+        // de le lui effacer au moment où il crée son compte.
+        if (this.previousUid !== null) this.cart.clear();
+        this.previousUid = uid;
+      }
+    });
   }
 
   /**

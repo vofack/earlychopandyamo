@@ -40,6 +40,10 @@
     "subtitle": "Des plats faits maison, préparés le jour même avec des ingrédients frais, et livrés gratuitement partout à Montérégie.",
     "cta": "Voir notre menu",
     "ctaSecondary": "Nous contacter",
+    "account": {
+      "cta": "Créer mon compte",
+      "hint": "Avec un compte, suivez toutes vos commandes en temps réel, retrouvez tout votre historique, et gagnez des repas gratuits en parrainant vos amis."
+    },
     "pills": {
       "delivery": "Livraison gratuite",
       "time": "30-45 min",

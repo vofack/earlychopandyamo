@@ -109,6 +109,12 @@
 }
 
 .hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  max-width: 100%;
   @include enter(fade-up, $t-slow, 270ms);
 }
 
@@ -119,6 +125,58 @@
   span { transition: transform $t-fast $ease-out; }
 
   &:hover span { transform: translateX(4px); }
+}
+
+/* Bouton secondaire « verre clair » : lisible sur la photo sombre sans
+   concurrencer le bouton or, qui reste l'action principale. */
+.hero__signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 26px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: $r-full;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #fff;
+  backdrop-filter: blur(8px);
+  transition: background-color $t-fast $ease-out, border-color $t-fast $ease-out,
+    transform $t-fast $ease-out;
+  @include focus-ring;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: #fff;
+    transform: translateY(-2px);
+  }
+
+  &:disabled { opacity: 0.6; }
+}
+
+.hero__signin-g {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  /* Pastille blanche derrière le logo Google : ses couleurs officielles
+     doivent rester sur fond clair pour rester reconnaissables. */
+  background: #fff;
+  border-radius: $r-full;
+  padding: 2px;
+  box-sizing: content-box;
+}
+
+/* Petit texte sur photo : blanc quasi plein + ombre marquée, car il peut
+   tomber sur une zone claire de l'image (l'assiette) où un gris clair
+   passerait sous le seuil de contraste AA. */
+.hero__account-hint {
+  max-width: min(46ch, 100%);
+  margin-top: 16px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 2px 14px rgba(0, 0, 0, 0.6);
+  @include enter(fade-up, $t-slow, 330ms);
 }
 
 /* ---------- Pastilles ---------- */
